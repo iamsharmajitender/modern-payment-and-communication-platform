@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Large PDF Delivery — Reference Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper: #f8fafc; --color-ink: #1e293b; --color-muted: #64748b;
+      --color-rule: rgba(30,41,59,0.12); --color-accent: #3b82f6;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-serif: 'Instrument Serif', serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink); padding: 3rem 2rem; }
+    .frame { max-width: 1320px; margin: 0 auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 0.5rem; }
+    .subtitle { color: var(--color-muted); font-size: 0.95rem; margin-bottom: 1.5rem; max-width: 60rem; }
+    .diagram { overflow-x: auto; }
+    svg { width: 100%; min-width: 1100px; display: block; }
+    footer { margin-top: 2rem; padding-top: 0.75rem; border-top: 1px solid var(--color-rule); font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-muted); letter-spacing: 0.04em; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Reference architecture · Cloud agnostic</p>
+    <h1>Large PDF delivery: process once, then move only the bytes on screen</h1>
+    <p class="subtitle">Publishing and ingestion write immutable document versions into the document store. On the read path the Document API decides who may read, and the edge delivery tier serves only the byte ranges or chunks for the pages on screen.</p>
+
+    <div class="diagram">
+    <svg viewBox="0 0 1280 696" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pdf-refarch-title pdf-refarch-desc">
+      <title id="pdf-refarch-title">Large PDF delivery reference architecture</title>
+      <desc id="pdf-refarch-desc">Cloud-agnostic reference architecture for delivering a very large PDF: an admin portal and upload service feed an eight-step ingestion pipeline that writes immutable versions to object storage and metadata to PostgreSQL; customer apps call a Document API for access, search and reading state, and fetch byte ranges or page chunks through an edge delivery tier with token validation; everything runs on a portable platform.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2563eb"/></marker>
+        <style>
+          .zone       { fill: #f1f5f9; stroke: rgba(30,41,59,0.12); stroke-width: 1; }
+          .zone-focal { fill: rgba(59,130,246,0.08); stroke: #3b82f6; stroke-width: 1.2; }
+          .chip       { fill: #ffffff; stroke: rgba(30,41,59,0.25); stroke-width: 1; }
+          .chip-store { fill: rgba(30,41,59,0.05); stroke: #64748b; stroke-width: 1; }
+          .chip-opt   { fill: rgba(30,41,59,0.02); stroke: rgba(30,41,59,0.20); stroke-width: 1; stroke-dasharray: 4 3; }
+          .nm  { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+          .nml { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: start; }
+          .sb  { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 9px; fill: #64748b; text-anchor: middle; }
+          .sbr { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 9px; fill: #64748b; text-anchor: end; }
+          .hd  { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 8px; font-weight: 600; letter-spacing: 0.14em; fill: #1e293b; }
+          .hd-focal { fill: #3b82f6; }
+          .ix  { fill: #94a3b8; }
+          .ds  { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 8px; letter-spacing: 0.1em; fill: #94a3b8; text-anchor: end; }
+          .al  { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 8px; letter-spacing: 0.06em; fill: #64748b; text-anchor: middle; }
+          .lg  { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 8px; letter-spacing: 0.06em; fill: #64748b; }
+        </style>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#f8fafc"/>
+
+      <!-- ============ CONNECTORS ============ -->
+      <line x1="184" y1="176" x2="184" y2="208" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+      <rect x="192" y="184" width="36" height="12" rx="2" fill="#f8fafc"/>
+      <text x="210" y="193" class="al">UPLOAD</text>
+
+      <path d="M328,438 H392" fill="none" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+      <rect x="336" y="418" width="48" height="12" rx="2" fill="#f8fafc"/>
+      <text x="360" y="427" class="al">WRITE v{n}</text>
+
+      <path d="M696,114 H632" fill="none" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+      <rect x="646" y="94" width="36" height="12" rx="2" fill="#f8fafc"/>
+      <text x="664" y="103" class="al">QUERY</text>
+
+      <path d="M696,438 H632" fill="none" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <rect x="646" y="418" width="36" height="12" rx="2" fill="#f8fafc"/>
+      <text x="664" y="427" class="al">ORIGIN</text>
+
+      <path d="M1048,140 H984" fill="none" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+      <rect x="992" y="120" width="48" height="12" rx="2" fill="#f8fafc"/>
+      <text x="1016" y="129" class="al">API CALLS</text>
+
+      <path d="M1048,404 H984" fill="none" stroke="#2563eb" stroke-width="1" marker-end="url(#arrow-link)"/>
+      <rect x="992" y="384" width="48" height="12" rx="2" fill="#f8fafc"/>
+      <text x="1016" y="393" class="al">RANGE GET</text>
+
+      <!-- ============ 01 · PUBLISHING ============ -->
+      <rect x="40" y="40" width="288" height="136" rx="8" class="zone"/>
+      <text x="56" y="58" class="hd"><tspan class="ix">01 · </tspan>PUBLISHING</text>
+      <text x="312" y="58" class="ds">INTERNAL</text>
+      <rect x="52" y="68" width="264" height="40" rx="6" class="chip"/>
+      <text x="184" y="85" class="nm">admin-portal</text>
+      <text x="184" y="99" class="sb">workforce SSO · maker-checker</text>
+      <rect x="52" y="116" width="264" height="40" rx="6" class="chip"/>
+      <text x="184" y="133" class="nm">upload-service</text>
+      <text x="184" y="147" class="sb">resumable multipart upload</text>
+
+      <!-- ============ 02 · INGESTION PIPELINE ============ -->
+      <rect x="40" y="208" width="288" height="296" rx="8" class="zone"/>
+      <text x="56" y="226" class="hd"><tspan class="ix">02 · </tspan>INGESTION PIPELINE</text>
+      <text x="312" y="226" class="ds">WORKFLOW</text>
+      <rect x="52" y="240" width="264" height="28" rx="6" class="chip-store"/>
+      <text x="64"  y="258" class="nml">1 · quarantine-store</text>
+      <text x="304" y="258" class="sbr">isolated bucket</text>
+      <rect x="52" y="272" width="264" height="28" rx="6" class="chip"/>
+      <text x="64"  y="290" class="nml">2 · malware-scan</text>
+      <text x="304" y="290" class="sbr">ClamAV or vendor</text>
+      <rect x="52" y="304" width="264" height="28" rx="6" class="chip"/>
+      <text x="64"  y="322" class="nml">3 · validate</text>
+      <text x="304" y="322" class="sbr">type · integrity</text>
+      <rect x="52" y="336" width="264" height="28" rx="6" class="chip"/>
+      <text x="64"  y="354" class="nml">4 · sanitise</text>
+      <text x="304" y="354" class="sbr">strip active content</text>
+      <rect x="52" y="368" width="264" height="28" rx="6" class="chip"/>
+      <text x="64"  y="386" class="nml">5 · ocr</text>
+      <text x="304" y="386" class="sbr">OCRmyPDF · Tesseract</text>
+      <rect x="52" y="400" width="264" height="28" rx="6" class="chip"/>
+      <text x="64"  y="418" class="nml">6 · linearise</text>
+      <text x="304" y="418" class="sbr">qpdf · last rewrite</text>
+      <rect x="52" y="432" width="264" height="28" rx="6" class="chip"/>
+      <text x="64"  y="450" class="nml">7 · extract</text>
+      <text x="304" y="450" class="sbr">text · outline · labels</text>
+      <rect x="52" y="464" width="264" height="28" rx="6" class="chip"/>
+      <text x="64"  y="482" class="nml">8 · derivatives</text>
+      <text x="304" y="482" class="sbr">chunks · thumbnails</text>
+
+      <!-- ============ 03 · DOCUMENT DATA ============ -->
+      <rect x="392" y="40" width="240" height="464" rx="8" class="zone"/>
+      <text x="408" y="58" class="hd"><tspan class="ix">03 · </tspan>DOCUMENT DATA</text>
+      <rect x="404" y="72" width="216" height="84" rx="6" class="chip-store"/>
+      <text x="512" y="104" class="nm">PostgreSQL</text>
+      <text x="512" y="120" class="sb">metadata · versions</text>
+      <text x="512" y="134" class="sb">page text index · bookmarks</text>
+      <rect x="404" y="180" width="216" height="84" rx="6" class="chip-opt"/>
+      <text x="512" y="212" class="nm">Search index</text>
+      <text x="512" y="228" class="sb">optional · OpenSearch</text>
+      <text x="512" y="242" class="sb">cross-document search</text>
+      <rect x="404" y="288" width="216" height="84" rx="6" class="chip-store"/>
+      <text x="512" y="320" class="nm">Audit store</text>
+      <text x="512" y="336" class="sb">append-only events</text>
+      <text x="512" y="350" class="sb">export to SIEM</text>
+      <rect x="404" y="396" width="216" height="84" rx="6" class="chip-store"/>
+      <text x="512" y="428" class="nm">Object storage</text>
+      <text x="512" y="444" class="sb">S3-compatible · private</text>
+      <text x="512" y="458" class="sb">immutable /v{n}/ keys</text>
+
+      <!-- ============ 04 · DOCUMENT API ============ -->
+      <rect x="696" y="40" width="288" height="200" rx="8" class="zone"/>
+      <text x="712" y="58" class="hd"><tspan class="ix">04 · </tspan>DOCUMENT API</text>
+      <text x="968" y="58" class="ds">WHO MAY READ</text>
+      <rect x="708" y="72" width="264" height="28" rx="6" class="chip"/>
+      <text x="720" y="90" class="nml">document-service</text>
+      <text x="960" y="90" class="sbr">metadata · manifest</text>
+      <rect x="708" y="104" width="264" height="28" rx="6" class="chip"/>
+      <text x="720" y="122" class="nml">access-service</text>
+      <text x="960" y="122" class="sbr">edge cookies</text>
+      <rect x="708" y="136" width="264" height="28" rx="6" class="chip"/>
+      <text x="720" y="154" class="nml">search-service</text>
+      <text x="960" y="154" class="sbr">page hits · snippets</text>
+      <rect x="708" y="168" width="264" height="28" rx="6" class="chip"/>
+      <text x="720" y="186" class="nml">reading-state-service</text>
+      <text x="960" y="186" class="sbr">bookmarks</text>
+      <rect x="708" y="200" width="264" height="28" rx="6" class="chip"/>
+      <text x="720" y="218" class="nml">audit-service</text>
+      <text x="960" y="218" class="sbr">who read what</text>
+
+      <!-- ============ 05 · EDGE DELIVERY (focal) ============ -->
+      <rect x="696" y="304" width="288" height="200" rx="8" class="zone-focal"/>
+      <text x="712" y="322" class="hd hd-focal"><tspan class="ix">05 · </tspan>EDGE DELIVERY</text>
+      <text x="968" y="322" class="ds">HOW FAST</text>
+      <rect x="708" y="336" width="264" height="44" rx="6" class="chip"/>
+      <text x="840" y="355" class="nm">CDN</text>
+      <text x="840" y="370" class="sb">range GET · 206 · immutable cache</text>
+      <rect x="708" y="388" width="264" height="44" rx="6" class="chip"/>
+      <text x="840" y="407" class="nm">Edge token check</text>
+      <text x="840" y="422" class="sb">signed cookie or edge function</text>
+      <rect x="708" y="440" width="264" height="44" rx="6" class="chip"/>
+      <text x="840" y="459" class="nm">WAF</text>
+      <text x="840" y="474" class="sb">rate limits · bot control</text>
+
+      <!-- ============ 06 · CUSTOMER APPS ============ -->
+      <rect x="1048" y="40" width="192" height="464" rx="8" class="zone"/>
+      <text x="1064" y="58" class="hd"><tspan class="ix">06 · </tspan>CUSTOMER APPS</text>
+      <rect x="1060" y="80"  width="168" height="64" rx="6" class="chip"/>
+      <text x="1144" y="108" class="nm">Desktop web</text>
+      <text x="1144" y="124" class="sb">PDF.js · range mode</text>
+      <rect x="1060" y="184" width="168" height="64" rx="6" class="chip"/>
+      <text x="1144" y="212" class="nm">iOS app</text>
+      <text x="1144" y="228" class="sb">PDFKit · page chunks</text>
+      <rect x="1060" y="288" width="168" height="64" rx="6" class="chip"/>
+      <text x="1144" y="316" class="nm">Android app</text>
+      <text x="1144" y="332" class="sb">PdfRenderer · chunks</text>
+      <rect x="1060" y="392" width="168" height="64" rx="6" class="chip-opt"/>
+      <text x="1144" y="420" class="nm">Offline copy</text>
+      <text x="1144" y="436" class="sb">optional · encrypted</text>
+
+      <!-- ============ 07 · PLATFORM ============ -->
+      <rect x="40" y="536" width="1200" height="80" rx="8" class="zone"/>
+      <text x="56" y="554" class="hd"><tspan class="ix">07 · </tspan>PORTABLE PLATFORM</text>
+      <text x="1224" y="554" class="ds">RUNS ON ANY CLOUD OR ON PREMISES</text>
+      <rect x="56"   y="564" width="188" height="40" rx="6" class="chip"/>
+      <text x="150"  y="581" class="nm">Kubernetes</text>
+      <text x="150"  y="595" class="sb">any conformant cluster</text>
+      <rect x="252"  y="564" width="188" height="40" rx="6" class="chip"/>
+      <text x="346"  y="581" class="nm">Workflow engine</text>
+      <text x="346"  y="595" class="sb">Temporal or Argo</text>
+      <rect x="448"  y="564" width="188" height="40" rx="6" class="chip"/>
+      <text x="542"  y="581" class="nm">Identity</text>
+      <text x="542"  y="595" class="sb">Keycloak or enterprise OIDC</text>
+      <rect x="644"  y="564" width="188" height="40" rx="6" class="chip"/>
+      <text x="738"  y="581" class="nm">Secrets &amp; keys</text>
+      <text x="738"  y="595" class="sb">Vault · KMS · HSM</text>
+      <rect x="840"  y="564" width="188" height="40" rx="6" class="chip"/>
+      <text x="934"  y="581" class="nm">Observability</text>
+      <text x="934"  y="595" class="sb">OpenTelemetry · RUM</text>
+      <rect x="1036" y="564" width="188" height="40" rx="6" class="chip"/>
+      <text x="1130" y="581" class="nm">Delivery pipeline</text>
+      <text x="1130" y="595" class="sb">GitOps · signed images</text>
+
+      <!-- ============ LEGEND ============ -->
+      <line x1="40" y1="640" x2="1240" y2="640" stroke="rgba(30,41,59,0.10)" stroke-width="0.8"/>
+      <text x="40" y="664" class="lg" letter-spacing="0.14em">LEGEND</text>
+      <rect x="120" y="652" width="24" height="16" rx="4" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="1.2"/>
+      <text x="152" y="664" class="lg">Focal: edge delivery</text>
+      <rect x="300" y="652" width="24" height="16" rx="4" fill="#ffffff" stroke="rgba(30,41,59,0.25)" stroke-width="1"/>
+      <text x="332" y="664" class="lg">Service or step</text>
+      <rect x="452" y="652" width="24" height="16" rx="4" fill="rgba(30,41,59,0.05)" stroke="#64748b" stroke-width="1"/>
+      <text x="484" y="664" class="lg">Data store</text>
+      <rect x="580" y="652" width="24" height="16" rx="4" fill="rgba(30,41,59,0.02)" stroke="rgba(30,41,59,0.20)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="612" y="664" class="lg">Optional</text>
+      <line x1="696" y1="660" x2="728" y2="660" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+      <text x="736" y="664" class="lg">Call or write</text>
+      <line x1="840" y1="660" x2="872" y2="660" stroke="#2563eb" stroke-width="1" marker-end="url(#arrow-link)"/>
+      <text x="880" y="664" class="lg">Byte-range fetch</text>
+    </svg>
+    </div>
+
+    <footer>Large PDF delivery · Reference architecture · G.A.I.N diagram skin</footer>
+  </div>
+</body>
+</html>
