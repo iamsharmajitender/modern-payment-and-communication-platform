@@ -4,8 +4,8 @@ Reference architectures and solution designs for three problems, published as a 
 
 | # | Problem | Status | Read it |
 |---|---------|--------|---------|
-| 1 | Modern payment platform | Component deep dive written | [docs/modern-payment-platform](docs/modern-payment-platform/docs/01-component-deep-dive.md) |
-| 2 | Large PDF delivery | Solution architecture written | [docs/large-pdf-render](docs/large-pdf-render/docs/01-solution-architecture.md) |
+| 1 | Modern payment platform | Component deep dive written | [docs/modern-payment-platform](docs/modern-payment-platform/docs/03-component-deep-dive.md) |
+| 2 | Large PDF delivery | Solution architecture written | [docs/large-pdf-render](docs/large-pdf-render/docs/03-solution-architecture.md) |
 | 3 | Customer communication platform | In progress | [docs/customer-communication-platform](docs/customer-communication-platform) |
 
 ---

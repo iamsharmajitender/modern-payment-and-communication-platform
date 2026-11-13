@@ -1,5 +1,5 @@
 ---
-sidebar_label: Solution architecture
+sidebar_label: AWS deep dive
 ---
 
 # Large PDF Delivery — Solution Architecture and Technology Recommendations
