@@ -2,6 +2,8 @@
 
 Reference architectures and solution designs for three problems, published as a [Docusaurus](https://docusaurus.io/) site.
 
+**Live site:** <https://iamsharmajitender.github.io/modern-payment-and-communication-platform/>
+
 | # | Problem | Status | Read it |
 |---|---------|--------|---------|
 | 1 | Modern payment platform | Component deep dive written | [docs/modern-payment-platform](docs/modern-payment-platform/docs/03-component-deep-dive.md) |
@@ -67,7 +69,7 @@ One-time setup:
 2. In the repository, open **Settings → Pages** and set **Source** to **GitHub Actions**.
 3. Push to `main`, or run the **Deploy to GitHub Pages** workflow by hand.
 
-The site appears at `https://<your-username>.github.io/<repository-name>/`. You don't need to edit any config for this: the workflow reads the address from GitHub and passes it to the build as `SITE_URL` and `BASE_URL`.
+The site is published at <https://iamsharmajitender.github.io/modern-payment-and-communication-platform/>. You don't need to edit any config for this: the workflow reads the address from GitHub and passes it to the build as `SITE_URL` and `BASE_URL`.
 
 To preview that path locally before pushing:
 
