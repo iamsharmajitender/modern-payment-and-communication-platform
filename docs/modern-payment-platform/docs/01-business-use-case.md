@@ -120,5 +120,5 @@ Illustrative targets, to be confirmed with the business.
 
 ## Related pages
 
-- [Reference architecture and solution design](./reference-architecture): the services, technology and flows behind these benefits.
-- [Component deep dive](./component-deep-dive): every component explained, with the Australian rail details.
+- [Reference architecture and solution design](./02-reference-architecture.md): the services, technology and flows behind these benefits.
+- [Component deep dive](./03-component-deep-dive.md): every component explained, with the Australian rail details.

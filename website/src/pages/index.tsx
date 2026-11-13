@@ -18,14 +18,14 @@ const topics: Topic[] = [
     title: 'Modern payment platform',
     description:
       'Greenfield payments platform for an Australian bank: one rail-agnostic ISO 20022 hub with adapters for NPP, PayTo, BECS, BPAY, high-value RTGS and SWIFT.',
-    to: '/docs/modern-payment-platform/docs/component-deep-dive',
+    to: '/docs/modern-payment-platform/docs/business-use-case',
     tags: ['Payments', 'ISO 20022', 'Australia'],
   },
   {
     title: 'Large PDF delivery',
     description:
       'Serving a 1,000-page, 200 MB PDF to desktop and mobile apps: range requests over a CDN, server-side search, page chunks for mobile and a safe ingestion pipeline.',
-    to: '/docs/large-pdf-render/docs/solution-architecture',
+    to: '/docs/large-pdf-render/docs/business-use-case',
     tags: ['AWS', 'CDN', 'Document delivery'],
   },
 ];
