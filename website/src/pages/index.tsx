@@ -18,7 +18,7 @@ const topics: Topic[] = [
     title: 'Modern payment platform',
     description:
       'Greenfield payments platform for an Australian bank: one rail-agnostic ISO 20022 hub with adapters for NPP, PayTo, BECS, BPAY, high-value RTGS and SWIFT.',
-    to: '/docs/modern-payment-platform/docs/business-use-case',
+    to: '/docs/modern-payment-platform/docs/exec-brief',
     tags: ['Payments', 'ISO 20022', 'Australia'],
   },
   {

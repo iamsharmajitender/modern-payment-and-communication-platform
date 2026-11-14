@@ -74,6 +74,11 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
+    docs: {
+      sidebar: {
+        autoCollapseCategories: true,
+      },
+    },
     mermaid: {
       theme: {light: 'neutral', dark: 'dark'},
     },
