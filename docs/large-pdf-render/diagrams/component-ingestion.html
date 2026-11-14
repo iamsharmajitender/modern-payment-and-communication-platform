@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ingestion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+  <style>html, body { margin: 0; background: #f8fafc; } svg { width: 1100px; height: 480px; display: block; }</style>
+</head>
+<body>
+<svg viewBox="0 0 1100 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">Ingestion</title>
+  <desc id="d">The pipeline scans before any parser runs, adds a text layer when the source is a scan, and linearises last. It writes derivatives and stops at ready for review.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker>
+    <style>
+      .nm { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sb { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #64748b; text-anchor: middle; }
+      .hd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; fill: #6d28d9; }
+      .lg { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #64748b; }
+    </style>
+  </defs>
+  <rect width="1100" height="480" fill="#f8fafc"/>
+
+  <rect x="28" y="28" width="1044" height="360" rx="8" fill="#ede9fe" stroke="#6d28d9" stroke-width="1.4"/>
+  <text x="48" y="52" class="hd">INGESTION · ONE WORKFLOW</text>
+
+  <rect x="48" y="72" width="160" height="64" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="128" y="98" class="nm">1 · Scan</text>
+  <text x="128" y="116" class="sb">quarantine</text>
+
+  <rect x="232" y="72" width="160" height="64" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="312" y="98" class="nm">2 · Validate</text>
+  <text x="312" y="116" class="sb">type · size</text>
+
+  <rect x="416" y="72" width="160" height="64" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="496" y="98" class="nm">3 · Sanitise</text>
+  <text x="496" y="116" class="sb">strip active content</text>
+
+  <rect x="600" y="72" width="200" height="64" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="700" y="98" class="nm">4 · Text layer</text>
+  <text x="700" y="116" class="sb">OCR only if scanned</text>
+
+  <rect x="824" y="72" width="220" height="64" rx="6" fill="#ffffff" stroke="#6d28d9" stroke-width="1.4"/>
+  <text x="934" y="98" class="nm">5 · Linearise last</text>
+  <text x="934" y="116" class="sb">qpdf · final rewrite</text>
+
+  <line x1="208" y1="104" x2="232" y2="104" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="392" y1="104" x2="416" y2="104" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="576" y1="104" x2="600" y2="104" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="800" y1="104" x2="824" y2="104" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <rect x="48" y="180" width="240" height="80" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="168" y="212" class="nm">6 · Extract</text>
+  <text x="168" y="230" class="sb">outline · labels · page text</text>
+
+  <rect x="312" y="180" width="240" height="80" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="432" y="212" class="nm">7 · Derivatives</text>
+  <text x="432" y="230" class="sb">chunks · thumbnails · manifest</text>
+
+  <rect x="576" y="180" width="468" height="80" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="810" y="212" class="nm">8 · Ready for review</text>
+  <text x="810" y="230" class="sb">not current until a second person publishes</text>
+
+  <line x1="934" y1="136" x2="934" y2="160" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="934" y1="160" x2="168" y2="160" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="168" y1="160" x2="168" y2="180" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="288" y1="220" x2="312" y2="220" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="552" y1="220" x2="576" y2="220" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <rect x="48" y="292" width="996" height="68" rx="6" fill="#fee2e2" stroke="#e11d48" stroke-width="1.2"/>
+  <text x="546" y="320" class="nm">Infected, or a scanned page with no text</text>
+  <text x="546" y="340" class="sb">Rejected. No customer prefix. The previous version stays current.</text>
+
+  <text x="28" y="424" class="lg">Parsers run in isolated containers. A published prefix is never an output path.</text>
+  <text x="28" y="448" class="lg">Linearise is the last rewrite. OCR and sanitising happen before it.</text>
+</svg>
+</body>
+</html>

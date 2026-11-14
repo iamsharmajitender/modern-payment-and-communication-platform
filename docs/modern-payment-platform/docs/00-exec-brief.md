@@ -4,13 +4,13 @@ sidebar_label: Executive brief
 
 # Modern Payment Platform
 
-Full case: [business use case](./01-business-use-case.md). Design: [reference architecture](./02-reference-architecture/index.md).
-
 ## Executive summary
 
 Endorse one payments platform as the direction for all payment networks, and approve the first release: instant payments on NPP, with real-time fraud and sanctions checks.
 
 One hub serves every channel and every network. Shared services apply the same checks to every payment. Each network connects through its own adapter. Customers pay and get paid instantly, safely and at any hour, in Australia or overseas.
+
+Full case: [business use case](./01-business-use-case.md). Design: [reference architecture](./02-reference-architecture/index.md).
 
 ## The problem
 

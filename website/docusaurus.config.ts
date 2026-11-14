@@ -4,7 +4,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Architecture Notes',
-  tagline: 'Reference architectures and solution designs',
+  tagline:
+    'An executive brief, a business use case, and a reference architecture for each problem.',
   favicon: 'img/favicon.ico',
 
   future: {

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document data</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+  <style>html, body { margin: 0; background: #f8fafc; } svg { width: 1100px; height: 420px; display: block; }</style>
+</head>
+<body>
+<svg viewBox="0 0 1100 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">Document data</title>
+  <desc id="d">Immutable version prefixes in private object storage, version and page text in PostgreSQL, and an append-only audit store. The current pointer moves only on publish.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker>
+    <style>
+      .nm { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sb { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #64748b; text-anchor: middle; }
+      .hd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; fill: #c2410c; }
+      .lg { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #64748b; }
+    </style>
+  </defs>
+  <rect width="1100" height="420" fill="#f8fafc"/>
+
+  <rect x="28" y="28" width="1044" height="280" rx="8" fill="#ffedd5" stroke="#ea580c" stroke-width="1.4"/>
+  <text x="48" y="52" class="hd">DOCUMENT DATA · SYSTEM OF RECORD</text>
+
+  <rect x="48" y="76" width="320" height="200" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="208" y="110" class="nm">Object storage</text>
+  <text x="208" y="132" class="sb">/v{n}/document.pdf</text>
+  <text x="208" y="150" class="sb">chunks · thumbnails</text>
+  <text x="208" y="168" class="sb">manifest.json</text>
+  <text x="208" y="196" class="sb">private · one prefix</text>
+  <text x="208" y="214" class="sb">per version · never reused</text>
+  <text x="208" y="246" class="sb">quarantine is a different bucket</text>
+
+  <rect x="392" y="76" width="320" height="200" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="552" y="110" class="nm">PostgreSQL</text>
+  <text x="552" y="132" class="sb">document · current version</text>
+  <text x="552" y="150" class="sb">version status · approver</text>
+  <text x="552" y="168" class="sb">page text and search vector</text>
+  <text x="552" y="196" class="sb">reading state per version</text>
+  <text x="552" y="228" class="sb">one database per service</text>
+  <text x="552" y="246" class="sb">no PDF bytes in a column</text>
+
+  <rect x="736" y="76" width="308" height="200" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="890" y="110" class="nm">Audit store</text>
+  <text x="890" y="132" class="sb">open · search · download</text>
+  <text x="890" y="150" class="sb">customer and version</text>
+  <text x="890" y="178" class="sb">append-only</text>
+  <text x="890" y="196" class="sb">export to the SIEM</text>
+  <text x="890" y="228" class="sb">not on the path that</text>
+  <text x="890" y="246" class="sb">paints the first page</text>
+
+  <text x="28" y="348" class="lg">Publish moves the current pointer. It does not overwrite the previous prefix.</text>
+  <text x="28" y="372" class="lg">Rollback points current at the prior version. Both prefixes remain.</text>
+</svg>
+</body>
+</html>

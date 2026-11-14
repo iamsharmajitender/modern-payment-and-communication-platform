@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clients</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+  <style>html, body { margin: 0; background: #f8fafc; } svg { width: 1100px; height: 420px; display: block; }</style>
+</head>
+<body>
+<svg viewBox="0 0 1100 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">Clients</title>
+  <desc id="d">Desktop, iOS, Android and an optional offline copy. Each calls one Document API, then fetches only the pages on screen. None of them calls the document store.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker>
+    <style>
+      .nm { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sb { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #64748b; text-anchor: middle; }
+      .hd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; fill: #0369a1; }
+      .lg { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #64748b; }
+    </style>
+  </defs>
+  <rect width="1100" height="420" fill="#f8fafc"/>
+  <rect x="28" y="28" width="1044" height="150" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.4"/>
+  <text x="48" y="52" class="hd">CLIENTS · ALREADY EXIST</text>
+
+  <rect x="48" y="72" width="230" height="88" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="163" y="104" class="nm">Desktop web</text>
+  <text x="163" y="122" class="sb">PDF.js · byte ranges</text>
+  <text x="163" y="138" class="sb">visible pages only</text>
+
+  <rect x="306" y="72" width="230" height="88" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="421" y="104" class="nm">iOS</text>
+  <text x="421" y="122" class="sb">PDFKit · page chunks</text>
+  <text x="421" y="138" class="sb">local file, not a stream</text>
+
+  <rect x="564" y="72" width="230" height="88" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="679" y="104" class="nm">Android</text>
+  <text x="679" y="122" class="sb">PdfRenderer · chunks</text>
+  <text x="679" y="138" class="sb">search stays on the server</text>
+
+  <rect x="822" y="72" width="230" height="88" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)" stroke-dasharray="4 3"/>
+  <text x="937" y="104" class="nm">Offline copy</text>
+  <text x="937" y="122" class="sb">optional · encrypted</text>
+  <text x="937" y="138" class="sb">expires with access</text>
+
+  <rect x="370" y="268" width="360" height="64" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="550" y="294" class="nm">One Document API</text>
+  <text x="550" y="312" class="sb">then the edge · no client calls the store</text>
+
+  <line x1="163" y1="160" x2="163" y2="220" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="421" y1="160" x2="421" y2="220" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="679" y1="160" x2="679" y2="220" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="937" y1="160" x2="937" y2="220" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="163" y1="220" x2="937" y2="220" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="550" y1="220" x2="550" y2="268" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <text x="28" y="390" class="lg">Every client opens one version, then fetches only the pages on screen.</text>
+</svg>
+</body>
+</html>

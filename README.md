@@ -7,7 +7,7 @@ Reference architectures and solution designs for three problems, published as a 
 | # | Problem | Status | Read it |
 |---|---------|--------|---------|
 | 1 | Modern payment platform | Reference architecture and component pages written | [docs/modern-payment-platform](docs/modern-payment-platform/docs/02-reference-architecture/index.md) |
-| 2 | Large PDF delivery | Solution architecture written | [docs/large-pdf-render](docs/large-pdf-render/docs/03-solution-architecture.md) |
+| 2 | Large PDF delivery | Reference architecture and component pages written | [docs/large-pdf-render](docs/large-pdf-render/docs/02-reference-architecture/index.md) |
 | 3 | Customer communication platform | In progress | [docs/customer-communication-platform](docs/customer-communication-platform) |
 
 ---
@@ -22,17 +22,11 @@ Reference architectures and solution designs for three problems, published as a 
 
 ## 2. Large PDF delivery
 
-**The problem.** Customers need to open, read, search and download a very large PDF (about 1,000 pages, up to roughly 200 MB) in desktop and mobile apps. Administrators publish new versions from time to time.
+**The problem.** Customers need to open, read, search and download a very large PDF (about 1,000 pages, up to roughly 200 MB) in the desktop and mobile apps. Administrators publish a new version from time to time. Today the whole file downloads before page 1, search runs on the device, and publishing overwrites the file.
 
-**The approach.** A reader views perhaps 20 to 50 pages per session, so the design moves only the bytes for the pages on screen:
+**The approach.** A reader views perhaps 20 to 50 pages per session, so the design moves only the bytes for the pages on screen. The Document API decides who may read and issues a short-lived cookie. Edge delivery serves byte ranges to the desktop viewer and pre-built page chunks to the phone. Search, the outline and thumbnails are built once, when the version is published. Each version gets new storage keys. A second person approves it. The pipeline scans for malware before any parser runs, and linearises the file last.
 
-- The PDF sits in private, versioned S3 storage and is served through CloudFront using HTTP range requests and signed cookies.
-- The desktop viewer is PDF.js in range mode.
-- Mobile apps render server-produced page chunks natively, because iOS PDFKit and Android `PdfRenderer` cannot stream a remote file.
-- Search, the table of contents and thumbnails are built at ingestion and served by the API, so the client never needs the whole file.
-- Uploads pass through a quarantine bucket and malware scan, then OCR, with linearisation as the last step.
-
-**What the document covers:** requirements and targets, a review of the first draft design, the target architecture on AWS (with Azure and Google Cloud equivalents), the processing pipeline, viewers, search, security, versioning, an API sketch, observability, cost, risks and a delivery plan.
+**What the documents cover:** an executive brief, the business use case, and a reference architecture. Under the architecture, one page each for clients, the Document API, edge delivery, publishing, ingestion, and document data. Those pages carry the design, the request and response, and the events and files for that part.
 
 ## 3. Customer communication platform
 

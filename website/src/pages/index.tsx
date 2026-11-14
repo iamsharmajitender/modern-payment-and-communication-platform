@@ -25,8 +25,8 @@ const topics: Topic[] = [
     title: 'Large PDF delivery',
     description:
       'Serving a 1,000-page, 200 MB PDF to desktop and mobile apps: range requests over a CDN, server-side search, page chunks for mobile and a safe ingestion pipeline.',
-    to: '/docs/large-pdf-render/docs/business-use-case',
-    tags: ['AWS', 'CDN', 'Document delivery'],
+    to: '/docs/large-pdf-render/docs/exec-brief',
+    tags: ['Documents', 'CDN', 'Mobile'],
   },
 ];
 

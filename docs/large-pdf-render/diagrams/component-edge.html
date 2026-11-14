@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edge delivery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+  <style>html, body { margin: 0; background: #f8fafc; } svg { width: 1100px; height: 420px; display: block; }</style>
+</head>
+<body>
+<svg viewBox="0 0 1100 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">Edge delivery</title>
+  <desc id="d">The CDN checks the cookie, then serves a cached byte range or page chunk. The origin is private. The cookie is not part of the cache key.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker>
+    <style>
+      .nm { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sb { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #64748b; text-anchor: middle; }
+      .hd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; fill: #1d4ed8; }
+      .lg { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #64748b; }
+    </style>
+  </defs>
+  <rect width="1100" height="420" fill="#f8fafc"/>
+
+  <rect x="370" y="16" width="360" height="52" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="550" y="38" class="nm">Client range or chunk</text>
+  <text x="550" y="54" class="sb">cookie scoped to one version</text>
+  <line x1="550" y1="68" x2="550" y2="108" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <rect x="28" y="116" width="1044" height="168" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.6"/>
+  <text x="48" y="140" class="hd">EDGE DELIVERY · HOW FAST</text>
+
+  <rect x="48" y="160" width="240" height="96" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="168" y="196" class="nm">WAF</text>
+  <text x="168" y="214" class="sb">rate limit · bot control</text>
+  <text x="168" y="230" class="sb">not an entitlement check</text>
+
+  <rect x="312" y="160" width="300" height="96" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="462" y="196" class="nm">Token check</text>
+  <text x="462" y="214" class="sb">signed cookie, edge function,</text>
+  <text x="462" y="230" class="sb">or a proxy in front of origin</text>
+
+  <rect x="636" y="160" width="412" height="96" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="842" y="196" class="nm">CDN cache</text>
+  <text x="842" y="214" class="sb">path only · cookie not in the key</text>
+  <text x="842" y="230" class="sb">206 for a range · no gzip on PDF</text>
+
+  <rect x="370" y="324" width="360" height="52" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="550" y="346" class="nm">Private object storage</text>
+  <text x="550" y="362" class="sb">fetch the range on a miss · no public URL</text>
+  <line x1="550" y1="284" x2="550" y2="324" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <text x="28" y="404" class="lg">One cached copy for every entitled reader of that version.</text>
+</svg>
+</body>
+</html>

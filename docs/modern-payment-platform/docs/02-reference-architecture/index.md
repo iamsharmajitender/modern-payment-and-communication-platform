@@ -5,7 +5,7 @@ slug: /modern-payment-platform/docs/reference-architecture
 
 # Modern Payment Platform — Reference Architecture and Solution Design
 
-**Scope:** The services that make up the platform, the rules that keep a payment consistent, and the portable technology they run on. The design is **cloud agnostic**. [Section 12](#12-cloud-mapping) maps each building block to AWS, Azure and Google Cloud for teams that prefer managed services.
+**Scope:** The services that make up the platform, the rules that keep a payment consistent, and the portable technology they run on. The design is **cloud agnostic**. [Section 12](#12-cloud-mapping) maps each building block to AWS, Azure and Google Cloud for teams that prefer managed services. The public edge may be Akamai. See [request protection](#request-protection).
 
 **Context:** A bank with direct access to the Australian rails (NPP, PayTo, BECS, BPAY, high-value RTGS) and SWIFT. The [executive brief](../00-exec-brief.md) is the short version, and the benefits are in the [business use case](../01-business-use-case.md). How to design each part, including the request and response, is on [clients](./01-clients.md), the [unified payment gateway](./02-unified-payment-gateway.md), the [payments hub](./03-payments-hub.md), [rails](./04-rails.md), [accounts and ledger](./05-accounts-and-ledger.md) and [shared services](./06-shared-services.md).
 
@@ -376,11 +376,11 @@ The products that implement these controls are in [section 11](#11-technology-st
 | Data protection | Encryption in transit and at rest. Personal data tokenised or masked in logs and in the analytics store |
 | Supply chain | Signed container images, a software bill of materials, and admission control on the cluster |
 | Compliance | APRA CPS 234, the SWIFT Customer Security Programme, and the Privacy Act. Card data is out of scope |
-| Request protection | A WAF and DDoS protection on the public edge, in front of the Payments API. See below |
+| Request protection | A WAF and DDoS protection on the public edge, in front of the Payments API. The edge is the cloud service or Akamai. See below |
 
 ### Request protection
 
-A public request is inspected before it reaches `api-gateway` or `file-gateway-service`. This layer is the cloud edge. The payment services do not implement their own WAF.
+A public request is inspected before it reaches `api-gateway` or `file-gateway-service`. This layer is the cloud edge, or Akamai in front of the cloud. The payment services do not implement their own WAF.
 
 | Threat | What stops it | Where |
 |--------|----------------|-------|
@@ -394,13 +394,13 @@ The WAF runs the OWASP core rule set, a limit on body size, a block on methods t
 
 File transfer is not HTTP, so the WAF does not see an SFTP drop. Those addresses are still covered by DDoS protection, and the file gateway scans the bytes. NPP and SWIFT sessions arrive on the private links in [section 12](#12-cloud-mapping) and do not pass through this public edge.
 
-| Role | AWS | Azure | Google Cloud |
-|------|-----|-------|--------------|
-| DDoS protection | AWS Shield Standard on every public resource. **AWS Shield Advanced** on the Payments API and the file edge | Azure DDoS Infrastructure Protection on the network. **Azure DDoS Network Protection** on the public endpoints | **Cloud Armor** always-on network DDoS protection. Cloud Armor Enterprise where adaptive protection is required |
-| Web application firewall | **AWS WAF** on CloudFront, with the managed rule groups | **Azure Web Application Firewall** on Azure Front Door | **Cloud Armor** security policy on the external load balancer |
-| Public HTTPS edge | Amazon CloudFront | Azure Front Door | Global external Application Load Balancer |
+| Role | AWS | Azure | Google Cloud | Akamai |
+|------|-----|-------|--------------|--------|
+| DDoS protection | AWS Shield Standard on every public resource. **AWS Shield Advanced** on the Payments API and the file edge | Azure DDoS Infrastructure Protection on the network. **Azure DDoS Network Protection** on the public endpoints | **Cloud Armor** always-on network DDoS protection. Cloud Armor Enterprise where adaptive protection is required | Edge DDoS on Ion for public HTTP. **Akamai Prolexic** on the Payments API and the file edge |
+| Web application firewall | **AWS WAF** on CloudFront, with the managed rule groups | **Azure Web Application Firewall** on Azure Front Door | **Cloud Armor** security policy on the external load balancer | **Akamai App & API Protector** on Ion, with the managed rule sets |
+| Public HTTPS edge | Amazon CloudFront | Azure Front Door | Global external Application Load Balancer | Akamai Ion |
 
-Shield Advanced, Azure DDoS Network Protection, and Cloud Armor Enterprise are the paid tier: a response team and protection of the payment edge during an attack. The baseline tier stays on for every other public address.
+Shield Advanced, Azure DDoS Network Protection, Cloud Armor Enterprise and Akamai Prolexic include a response team and protection of the payment edge during an attack. On the cloud, the baseline tier stays on for every other public address. Akamai sits in front of the origin. The origin is the cloud load balancer. NPP and SWIFT sessions stay on the private links and do not pass through Akamai.
 
 ---
 
@@ -434,7 +434,7 @@ Each row is the chosen product. Earlier sections describe the control. They do n
 | Analytics | Apache Iceberg, queried by Trino or Spark | Open table format |
 | Object storage | An S3-compatible store | Archive and the data lake |
 | Bought components | Sanctions screening, the fraud platform, the NPP gateway, the SWIFT interface | Behind the service interface, so the product can be replaced |
-| Edge protection | The cloud WAF and DDoS service in [section 9](#request-protection) and [section 12](#12-cloud-mapping) | In front of the public Payments API and the file edge. Scheme links stay on the private path |
+| Edge protection | The cloud WAF and DDoS service, or Akamai, in [section 9](#request-protection) and [section 12](#12-cloud-mapping) | In front of the public Payments API and the file edge. Scheme links stay on the private path |
 
 ---
 
@@ -462,6 +462,8 @@ Managed equivalents for a team that does not want to operate the stack above. Th
 | Web application firewall | AWS WAF on CloudFront | Azure Web Application Firewall on Front Door | Cloud Armor security policy |
 | Public HTTPS edge | Amazon CloudFront | Azure Front Door | Global external Application Load Balancer |
 
+Akamai can be that public edge in front of any cloud in this table. Ion is the HTTPS edge, App & API Protector is the web application firewall, and Prolexic is the DDoS protection for the Payments API and the file edge. The origin stays the cloud load balancer.
+
 Use the managed service through its open interface: the Kafka protocol, the PostgreSQL wire protocol, the S3 API and OpenTelemetry. Keep infrastructure as code per cloud. A proprietary feature on the payment path is an ADR, not a default. A cloud workflow engine such as Step Functions, Durable Functions or Google Workflows is a different programming model from Temporal, so it is a separate decision and not a drop-in mapping.
 
 ---
@@ -481,6 +483,6 @@ Use the managed service through its open interface: the Kafka protocol, the Post
 | 9 | Kubernetes and open protocols | A cloud-specific serverless stack for the payment path | The path could not move cloud, or on premises, without a rewrite. Serverless remains available off the payment path |
 | 10 | Buy screening, the fraud platform, the NPP gateway and the SWIFT interface. Build the hub, routing and the channel contract | Buy one payments-hub suite, or build the scheme gateways | A suite tends to become another silo, with its own rules. Scheme connectivity is a certified commodity. Orchestration and routing are where the bank's payment policy lives |
 | 11 | Cells partitioned by customer ID | One active-active estate for every customer | A bad release or a poisoned partition then takes a slice of customers, not the franchise. The ESA position, reconciliation and scheme sessions stay outside the cells, because they are single positions for the bank |
-| 12 | Public HTTP enters through the cloud WAF and DDoS service | A WAF running only inside the cluster | The cluster would absorb the flood, and the accept path would take traffic that should have been dropped at the edge |
+| 12 | Public HTTP enters through the cloud WAF and DDoS service, or through Akamai in front of the cloud | A WAF running only inside the cluster | The cluster would absorb the flood, and the accept path would take traffic that should have been dropped at the edge |
 
 Record each as an ADR once it is agreed. The design pages follow this list. They do not keep a second one.
