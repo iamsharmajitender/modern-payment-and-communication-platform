@@ -8,6 +8,10 @@ sidebar_label: Business use case
 
 **Context:** An Australian bank that holds a banking licence (an authorised deposit-taking institution, or ADI) and connects directly to the Australian payment networks and to SWIFT for international payments. It is building a new payments platform from scratch rather than extending older systems.
 
+![Business value map: why now, what we build, what we get and how we measure it](../diagrams/business-value-map.png)
+
+Read it left to right. Market and regulatory drivers shape six platform capabilities. Those capabilities deliver benefits across customer, revenue, cost, risk, compliance and resilience, and each benefit is paired with the measure that proves it. Value is released in four phases. [Open the full diagram](pathname:///modern-payment-platform/diagrams/business-value-map.html).
+
 ---
 
 ## 1. Why now

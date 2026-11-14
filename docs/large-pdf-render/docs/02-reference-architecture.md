@@ -8,6 +8,28 @@ sidebar_label: Reference architecture
 
 ---
 
+## Assumptions
+
+The reference architecture rests on the assumptions below. Confirm each one with the business and the owning teams. The last column shows what changes in the design if an assumption turns out to be wrong.
+
+| # | Area | Assumption | If it does not hold |
+|---|------|------------|---------------------|
+| 1 | Content | The document is the same for every entitled customer. It is not personalised, so all customers share one cached copy at the edge | Personalised documents cannot be shared in the CDN cache. Each version would be rendered per customer, which changes storage, cost and delivery |
+| 2 | Document size and count | There are a handful of large documents, each about 1,000 pages and up to roughly 200 MB | Many documents, or search across them, moves search from PostgreSQL to OpenSearch sooner and needs more pipeline capacity |
+| 3 | Update frequency | New versions are published monthly or less often, and publishing is not time-critical. Processing a version, including OCR, can take minutes or longer before review | Frequent or urgent updates need a faster pipeline, for example parallel OCR across page ranges |
+| 4 | Reading pattern | A customer reads perhaps 20 to 50 pages per session, not the whole document | If most customers read the whole file, range requests save less and the optional offline copy becomes the main path |
+| 5 | Customer actions | Customers read, search, bookmark and download. They do not annotate, fill forms or sign | Annotation, forms or signing need a commercial viewer SDK on every platform |
+| 6 | Source quality | Source PDFs are valid enough to sanitise and linearise, and most have an outline. Scanned pages are expected and are handled by OCR | Badly structured files are flagged by the pipeline, and publishers must fix the source |
+| 7 | Identity and entitlement | Customers sign in through the enterprise identity provider using OpenID Connect, and the rules for who may read each document are available to `document-service` and `access-service` | A missing entitlement source must be built first, because every read path call depends on it |
+| 8 | Clients | Customers use existing authenticated apps: a desktop web app that can host PDF.js, and iOS and Android apps that can use PDFKit and `PdfRenderer` | A public website or other client types need their own access and caching rules |
+| 9 | CDN capability | The chosen CDN supports HTTP range requests, long cache lifetimes and a cache key that leaves out the access cookie. Which edge token option it supports is confirmed in a spike ([section 4](#4-edge-token-validation-the-portability-question)) | Without range support, desktop falls back to page chunks like mobile. Without edge validation, use the token-checking proxy |
+| 10 | Traffic | Read traffic is moderate (the cost illustration uses 10,000 sessions a month), and the CDN absorbs most of it, so origin services stay small | Much higher traffic mainly raises CDN cost. The origin design stays the same, with more replicas |
+| 11 | Availability | 99.9% availability is enough, so one region across three availability zones, with a cross-region database replica, meets the target | A higher target needs active-active delivery and storage across regions |
+| 12 | Data residency and retention | Storage and processing stay in one required region (for example, Australia). Old versions are kept for as long as regulation requires | Other residency rules change where storage, processing and replicas run. Retention lock is turned on only where required |
+| 13 | Publishing roles | At least two administrators are available, so a second person can approve every version before it goes live | A single publisher cannot meet the maker-checker control without a documented exception |
+
+---
+
 ## 1. Architecture principles
 
 1. **The API decides who may read. The edge decides how fast.** Clients never talk to the document store directly.

@@ -10,6 +10,28 @@ sidebar_label: Reference architecture
 
 ---
 
+## Assumptions
+
+The reference architecture rests on the assumptions below. Confirm each one with the business and the owning teams. The last column shows what changes in the design if an assumption turns out to be wrong.
+
+| # | Area | Assumption | If it does not hold |
+|---|------|------------|---------------------|
+| 1 | Scheme participation | The bank is a direct participant in NPP (including PayTo), BECS, BPAY and high-value settlement through RITS, holds its own Exchange Settlement Account at the Reserve Bank, and is a SWIFT member | Rails reached through a sponsor bank connect to the sponsor instead of the scheme, and `liquidity-service` covers less of the settlement position |
+| 2 | Scope | The platform is greenfield. This page describes the end state, delivered in the four phases in the business use case, starting with NPP | Extending an existing payments system means wrapping it behind adapters and migrating rail by rail, which changes the phasing |
+| 3 | Core banking | The core banking system stays the system of record for customer accounts and exposes an API for balances, holds, postings and reversals that `account-gateway` can call. It may still have batch windows, which the payments ledger absorbs | Without a real-time hold API, the payments ledger must keep a shadow balance for every account and reconcile it with the core, which is a much bigger build |
+| 4 | Channels | Mobile, internet banking and corporate channels already exist and are out of scope. They call the single Payments API through the edge | Channels built as part of this programme need their own design. The Payments API contract stays the same |
+| 5 | Bought components | The sanctions screening engine, fraud platform, NPP gateway and SWIFT interface are bought. Each check answers within its share of the time budget in [section 5](#5-interaction-patterns), so the total stays near 600 ms | A slower check pushes instant payments past their budget. Options are caching, running checks in parallel, or choosing a different product |
+| 6 | Adjacent platforms | The customer communication platform delivers notifications, an analytics platform receives the event stream, and the enterprise identity provider handles customer and staff identity | A missing platform must be built in this programme (for example, Keycloak for identity), which adds scope and changes ownership |
+| 7 | Volumes | Peak volumes are not yet sized. They are assumed to fit horizontally scaled services and Kafka partitions within each cell | Very high peaks, such as payroll moving to NPP after the BECS wind-down, may need more cells or partitions. Load test before each phase |
+| 8 | Cells | Customers can be assigned to a home cell by customer ID. Bank-wide functions such as the settlement account position, liquidity and reconciliation run across all cells | If customers cannot be cleanly partitioned, the platform runs active-active without cells and a fault can affect every customer |
+| 9 | Hosting and data residency | The bank can run Kubernetes, self-managed or managed, in at least two Australian regions with three availability zones each. Payment data and keys stay onshore | With only one region, recovery from a regional failure falls back to the data centres and recovery time increases |
+| 10 | Scheme connectivity | NPP gateways, the SWIFT interface and HSMs stay in two bank data centres or co-location sites, connected to the cloud regions by private links | Moving scheme connectivity into the cloud moves the adapters' network path and HSMs with it, and needs scheme and SWIFT approval |
+| 11 | Operations | The bank has, or will build, a platform team that can run Kafka, Temporal, PostgreSQL and Kubernetes 24/7, or it uses the managed services in [section 13](#13-cloud-mapping) | Without these skills, use managed services for the stateful building blocks and plan for training |
+| 12 | Rail roadmap | NPP, high-value settlement and SWIFT carry ISO 20022. BECS stays in service until its planned wind-down around 2030, and BPAY stays file-based | A different BECS timeline only changes when the BECS adapter is built or retired. The hub is unaffected |
+| 13 | Regulation | The obligations that apply are APRA CPS 230 and CPS 234, AUSTRAC reporting and AML/CTF record keeping (at least 7 years), the SWIFT Customer Security Programme, the Privacy Act and the Scams Prevention Framework | New or changed obligations become new checks, reports or retention rules. The layered design stays the same |
+
+---
+
 ## 1. Architecture principles
 
 1. **Rail-agnostic hub.** The hub only works with the canonical ISO 20022 model. Every scheme difference lives in a rail adapter.
