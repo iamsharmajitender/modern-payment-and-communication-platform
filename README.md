@@ -6,7 +6,7 @@ Reference architectures and solution designs for three problems, published as a 
 
 | # | Problem | Status | Read it |
 |---|---------|--------|---------|
-| 1 | Modern payment platform | Component deep dive written | [docs/modern-payment-platform](docs/modern-payment-platform/docs/03-component-deep-dive.md) |
+| 1 | Modern payment platform | Reference architecture and component pages written | [docs/modern-payment-platform](docs/modern-payment-platform/docs/02-reference-architecture/index.md) |
 | 2 | Large PDF delivery | Solution architecture written | [docs/large-pdf-render](docs/large-pdf-render/docs/03-solution-architecture.md) |
 | 3 | Customer communication platform | In progress | [docs/customer-communication-platform](docs/customer-communication-platform) |
 
@@ -18,7 +18,7 @@ Reference architectures and solution designs for three problems, published as a 
 
 **The approach.** Almost every one of these rails already uses ISO 20022 or is moving to it, so the design centres on one rail-agnostic payments hub with an ISO 20022 canonical model. Channels call a single Payments API. The hub validates the payment, runs shared checks such as payee verification, fraud, sanctions and limits, reserves funds against the ledger and liquidity, then routes the payment to a rail adapter that speaks that scheme's format. Reconciliation, investigations, notifications and regulatory reporting sit after the rails.
 
-**What the document covers:** the rails and their message formats, an eight-layer architecture with a diagram, each layer in detail, end-to-end payment flows, key decisions and trade-offs, the regulatory landscape, the business case and a glossary. It is written as source material for a business deck and a technical deck.
+**What the documents cover:** an executive brief, the business use case, and a reference architecture. Under the architecture, one page each for clients, the unified payment gateway, the payments hub, the rails, accounts and the ledger, and shared services. Those pages carry the design, the request and response, and the events and files for that part.
 
 ## 2. Large PDF delivery
 

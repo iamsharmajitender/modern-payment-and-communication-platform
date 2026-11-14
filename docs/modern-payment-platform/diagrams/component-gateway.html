@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unified payment gateway</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+  <style>html, body { margin: 0; background: #f8fafc; } svg { width: 1100px; height: 480px; display: block; }</style>
+</head>
+<body>
+<svg viewBox="0 0 1100 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">Unified payment gateway</title>
+  <desc id="d">The gateway only. The API gateway checks the token and the idempotency key, then calls the hub. The file gateway splits a bulk file into payment requests. Neither service chooses a rail or posts.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker>
+    <marker id="arrow-in" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f46e5"/></marker>
+    <style>
+      .nm { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sb { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #64748b; text-anchor: middle; }
+      .hd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; fill: #4338ca; }
+      .al { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; letter-spacing: 0.06em; fill: #64748b; text-anchor: middle; }
+      .lg { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #64748b; }
+    </style>
+  </defs>
+  <rect width="1100" height="480" fill="#f8fafc"/>
+
+  <rect x="480" y="16" width="280" height="52" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="620" y="38" class="nm">Clients</text>
+  <text x="620" y="54" class="sb">apps · files · branch · partners</text>
+
+  <rect x="36" y="140" width="740" height="200" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+  <text x="300" y="168" class="hd">UNIFIED PAYMENT GATEWAY</text>
+
+  <rect x="56" y="180" width="210" height="120" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="161" y="228" class="nm">file-gateway-service</text>
+  <text x="161" y="246" class="sb">scan · parse</text>
+  <text x="161" y="262" class="sb">one request per row</text>
+
+  <rect x="300" y="196" width="170" height="88" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="385" y="232" class="nm">identity-provider</text>
+  <text x="385" y="250" class="sb">token · consent</text>
+
+  <rect x="510" y="168" width="230" height="144" rx="6" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.6"/>
+  <text x="625" y="220" class="nm">api-gateway</text>
+  <text x="625" y="238" class="sb">auth · rate limit</text>
+  <text x="625" y="254" class="sb">idempotency</text>
+  <text x="625" y="272" class="sb">then REST to the hub</text>
+
+  <rect x="840" y="192" width="220" height="120" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="950" y="244" class="nm">Payments hub</text>
+  <text x="950" y="262" class="sb">outside this component</text>
+
+  <line x1="470" y1="240" x2="510" y2="240" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="740" y1="240" x2="840" y2="240" stroke="#4f46e5" stroke-width="1.2" marker-end="url(#arrow-in)"/>
+  <path d="M161,300 V360 H950 V312" fill="none" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <rect x="400" y="368" width="120" height="14" rx="2" fill="#f8fafc"/>
+  <text x="460" y="378" class="al">payment.requested</text>
+
+  <line x1="619" y1="68" x2="619" y2="168" stroke="#4f46e5" stroke-width="1.2" marker-end="url(#arrow-in)"/>
+  <path d="M520,68 V100 H161 V180" fill="none" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <rect x="548" y="112" width="56" height="14" rx="2" fill="#f8fafc"/>
+  <text x="576" y="122" class="al">ONLINE</text>
+  <rect x="176" y="112" width="44" height="14" rx="2" fill="#f8fafc"/>
+  <text x="198" y="122" class="al">FILE</text>
+
+  <text x="36" y="430" class="lg">Online calls return 201 only after the hub has a durable rail command. A file acknowledgement returns when the file is stored.</text>
+  <text x="36" y="452" class="lg">The idempotency key and body hash live here for 24 hours. The payment lives in the hub.</text>
+</svg>
+</body>
+</html>

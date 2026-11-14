@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accounts and ledger</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+  <style>html, body { margin: 0; background: #f8fafc; } svg { width: 1100px; height: 520px; display: block; }</style>
+</head>
+<body>
+<svg viewBox="0 0 1100 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">Accounts and ledger</title>
+  <desc id="d">The accounts layer only. The hub asks account-gateway to hold and post. The payments ledger books money in flight. Core banking stays the customer system of record. Liquidity and reconciliation read the journals. They do not reserve customer funds.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker>
+    <marker id="arrow-o" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#ea580c"/></marker>
+    <style>
+      .nm { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sb { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #64748b; text-anchor: middle; }
+      .hd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; fill: #c2410c; }
+      .al { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; letter-spacing: 0.06em; fill: #64748b; text-anchor: middle; }
+      .lg { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #64748b; }
+    </style>
+  </defs>
+  <rect width="1100" height="520" fill="#f8fafc"/>
+
+  <rect x="250" y="16" width="300" height="52" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="400" y="38" class="nm">Payments hub</text>
+  <text x="400" y="54" class="sb">asks for a hold, then a post</text>
+
+  <rect x="36" y="108" width="760" height="360" rx="8" fill="#ffedd5" stroke="#ea580c" stroke-width="1.4"/>
+  <text x="56" y="132" class="hd">ACCOUNTS AND LEDGER</text>
+
+  <rect x="220" y="148" width="360" height="72" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="400" y="176" class="nm">account-gateway</text>
+  <text x="400" y="194" class="sb">the only call to the core</text>
+
+  <rect x="140" y="268" width="520" height="88" rx="6" fill="#fff7ed" stroke="#ea580c" stroke-width="1.6"/>
+  <text x="400" y="300" class="nm">payments-ledger-service</text>
+  <text x="400" y="318" class="sb">in-flight · suspense · clearing · nostro</text>
+  <text x="400" y="334" class="sb">the real-time book</text>
+
+  <rect x="80" y="392" width="280" height="56" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="220" y="416" class="nm">liquidity-service</text>
+  <text x="220" y="432" class="sb">ESA and nostro · not a hold</text>
+
+  <rect x="400" y="392" width="280" height="56" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="540" y="416" class="nm">reconciliation-service</text>
+  <text x="540" y="432" class="sb">breaks · not a customer post</text>
+
+  <rect x="860" y="148" width="210" height="72" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="965" y="176" class="nm">Core banking</text>
+  <text x="965" y="194" class="sb">customer system of record</text>
+
+  <line x1="400" y1="68" x2="400" y2="148" stroke="#ea580c" stroke-width="1.2" marker-end="url(#arrow-o)"/>
+  <line x1="400" y1="220" x2="400" y2="268" stroke="#ea580c" stroke-width="1.2" marker-end="url(#arrow-o)"/>
+  <line x1="580" y1="184" x2="860" y2="184" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <rect x="680" y="164" width="72" height="14" rx="2" fill="#ffedd5"/>
+  <text x="716" y="174" class="al">REPLAY</text>
+  <line x1="220" y1="356" x2="220" y2="392" stroke="#64748b" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <line x1="540" y1="356" x2="540" y2="392" stroke="#64748b" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+
+  <text x="36" y="496" class="lg">A hold is synchronous. The customer post follows the rail result. If the core is in batch, the ledger already has the journal and the gateway replays it.</text>
+</svg>
+</body>
+</html>

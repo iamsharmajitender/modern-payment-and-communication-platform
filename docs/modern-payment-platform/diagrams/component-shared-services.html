@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shared services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+  <style>html, body { margin: 0; background: #f8fafc; } svg { width: 1100px; height: 620px; display: block; }</style>
+</head>
+<body>
+<svg viewBox="0 0 1100 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">Shared services</title>
+  <desc id="d">The checks the hub calls on the accept path. Each returns a decision. None of them posts, holds funds, or talks to a scheme. AML monitoring is not one of these calls.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#059669"/></marker>
+    <style>
+      .nm { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sb { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #64748b; text-anchor: middle; }
+      .hd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; fill: #047857; }
+      .lg { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #64748b; }
+    </style>
+  </defs>
+  <rect width="1100" height="620" fill="#f8fafc"/>
+
+  <rect x="24" y="248" width="200" height="80" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="124" y="276" class="nm">payment-orchestrator</text>
+  <text x="124" y="294" class="sb">calls · outside</text>
+  <text x="124" y="310" class="sb">this component</text>
+
+  <rect x="280" y="24" width="520" height="552" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="1.4"/>
+  <text x="300" y="46" class="hd">SHARED SERVICES</text>
+
+  <rect x="340" y="56" width="420" height="48" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="550" y="76" class="nm">payee-verification-service</text>
+  <text x="550" y="92" class="sb">name and nameCheck · 150 ms</text>
+
+  <rect x="340" y="144" width="420" height="48" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="550" y="164" class="nm">fraud-scoring-service</text>
+  <text x="550" y="180" class="sb">allow · challenge · hold · block</text>
+
+  <rect x="340" y="232" width="420" height="48" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="550" y="252" class="nm">sanctions-screening-service</text>
+  <text x="550" y="268" class="sb">clear or hit · a timeout parks</text>
+
+  <rect x="340" y="320" width="420" height="48" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="550" y="340" class="nm">limits-service</text>
+  <text x="550" y="356" class="sb">allow or decline · 60 ms</text>
+
+  <rect x="340" y="408" width="420" height="48" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="550" y="428" class="nm">pricing-fx-service</text>
+  <text x="550" y="444" class="sb">cross-border only · a quote, then a deal</text>
+
+  <rect x="340" y="496" width="420" height="48" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="550" y="516" class="nm">reference-data-service</text>
+  <text x="550" y="532" class="sb">BSB · BIC · calendars · not a decline</text>
+
+  <line x1="224" y1="288" x2="300" y2="288" stroke="#059669" stroke-width="1.2"/>
+  <line x1="300" y1="80" x2="300" y2="520" stroke="#059669" stroke-width="1.2"/>
+  <line x1="300" y1="80" x2="340" y2="80" stroke="#059669" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="300" y1="168" x2="340" y2="168" stroke="#059669" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="300" y1="256" x2="340" y2="256" stroke="#059669" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="300" y1="344" x2="340" y2="344" stroke="#059669" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="300" y1="432" x2="340" y2="432" stroke="#059669" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="300" y1="520" x2="340" y2="520" stroke="#059669" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <rect x="840" y="248" width="230" height="80" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="955" y="276" class="nm">aml-monitoring</text>
+  <text x="955" y="294" class="sb">reads payment.events</text>
+  <text x="955" y="310" class="sb">not called on accept</text>
+
+  <text x="24" y="600" class="lg">Each box returns a decision. None of them changes payment status, places a hold, or talks to a scheme.</text>
+</svg>
+</body>
+</html>

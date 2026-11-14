@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clients</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+  <style>html, body { margin: 0; background: #f8fafc; } svg { width: 1100px; height: 420px; display: block; }</style>
+</head>
+<body>
+<svg viewBox="0 0 1100 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">Clients</title>
+  <desc id="d">Five existing channels. Each calls one Payments API. None of them calls a rail.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker>
+    <style>
+      .nm { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sb { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #64748b; text-anchor: middle; }
+      .hd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; fill: #0369a1; }
+      .lg { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #64748b; }
+    </style>
+  </defs>
+  <rect width="1100" height="420" fill="#f8fafc"/>
+  <rect x="28" y="28" width="1044" height="150" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.4"/>
+  <text x="48" y="52" class="hd">CLIENTS · ALREADY EXIST</text>
+
+  <rect x="36" y="72" width="168" height="96" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="120" y="108" class="nm">Retail app</text>
+  <text x="120" y="126" class="sb">PayID · single pay</text>
+  <text x="120" y="142" class="sb">PayTo approval</text>
+
+  <rect x="248" y="72" width="168" height="96" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="332" y="108" class="nm">Business</text>
+  <text x="332" y="126" class="sb">files · APIs</text>
+  <text x="332" y="142" class="sb">payroll</text>
+
+  <rect x="460" y="72" width="168" height="96" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="544" y="108" class="nm">Branch</text>
+  <text x="544" y="126" class="sb">assisted pay</text>
+  <text x="544" y="142" class="sb">same API</text>
+
+  <rect x="672" y="72" width="168" height="96" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="756" y="108" class="nm">Partners</text>
+  <text x="756" y="126" class="sb">PayTo initiators</text>
+  <text x="756" y="142" class="sb">consent on the token</text>
+
+  <rect x="884" y="72" width="168" height="96" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="968" y="108" class="nm">Treasury</text>
+  <text x="968" y="126" class="sb">high value · fees</text>
+  <text x="968" y="142" class="sb">channel TREASURY</text>
+
+  <rect x="370" y="268" width="360" height="64" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="550" y="294" class="nm">One Payments API</text>
+  <text x="550" y="312" class="sb">the gateway · no client calls a rail</text>
+
+  <line x1="120" y1="168" x2="120" y2="220" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="332" y1="168" x2="332" y2="220" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="544" y1="168" x2="544" y2="220" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="756" y1="168" x2="756" y2="220" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="968" y1="168" x2="968" y2="220" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="120" y1="220" x2="968" y2="220" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="550" y1="220" x2="550" y2="268" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <text x="28" y="390" class="lg">Every client confirms the payee, then creates one payment. Status comes back on that same payment.</text>
+</svg>
+</body>
+</html>

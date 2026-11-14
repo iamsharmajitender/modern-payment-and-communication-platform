@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rails</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+  <style>html, body { margin: 0; background: #f8fafc; } svg { width: 1100px; height: 560px; display: block; }</style>
+</head>
+<body>
+<svg viewBox="0 0 1100 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">Rails</title>
+  <desc id="d">Six rail adapters. Each consumes one command, speaks one scheme, and publishes one status. The hub never sees scheme messages.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0284c7"/></marker>
+    <marker id="arrow-m" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker>
+    <style>
+      .nm { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sb { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #64748b; text-anchor: middle; }
+      .hd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; fill: #0369a1; }
+      .lg { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #64748b; }
+    </style>
+  </defs>
+  <rect width="1100" height="560" fill="#f8fafc"/>
+
+  <rect x="370" y="16" width="360" height="52" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="550" y="38" class="nm">payment.commands.&lt;rail&gt;</text>
+  <text x="550" y="54" class="sb">from the hub · outside this component</text>
+
+  <rect x="28" y="96" width="1044" height="340" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.4"/>
+  <text x="48" y="118" class="hd">RAILS</text>
+
+  <rect x="68" y="164" width="300" height="72" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="218" y="192" class="nm">npp-adapter</text>
+  <text x="218" y="210" class="sb">Osko · SCT · Payments Access Gateway</text>
+
+  <rect x="400" y="164" width="300" height="72" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="550" y="192" class="nm">payto-adapter</text>
+  <text x="550" y="210" class="sb">pain.009–012 · Mandate Management</text>
+
+  <rect x="732" y="164" width="300" height="72" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="882" y="192" class="nm">becs-adapter</text>
+  <text x="882" y="210" class="sb">ABA files · COIN</text>
+
+  <rect x="68" y="316" width="300" height="72" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="218" y="344" class="nm">bpay-adapter</text>
+  <text x="218" y="362" class="sb">biller files</text>
+
+  <rect x="400" y="316" width="300" height="72" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="550" y="344" class="nm">hvcs-adapter</text>
+  <text x="550" y="362" class="sb">high value · RITS</text>
+
+  <rect x="732" y="316" width="300" height="72" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="882" y="344" class="nm">swift-adapter</text>
+  <text x="882" y="362" class="sb">CBPR+ · gpi · nostro</text>
+
+  <line x1="550" y1="68" x2="550" y2="132" stroke="#0284c7" stroke-width="1.2"/>
+  <line x1="218" y1="132" x2="882" y2="132" stroke="#0284c7" stroke-width="1.2"/>
+  <line x1="218" y1="132" x2="218" y2="164" stroke="#0284c7" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="550" y1="132" x2="550" y2="164" stroke="#0284c7" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="882" y1="132" x2="882" y2="164" stroke="#0284c7" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <path d="M882,132 H1044 V292 H218" fill="none" stroke="#0284c7" stroke-width="1.2"/>
+  <line x1="218" y1="292" x2="218" y2="316" stroke="#0284c7" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="550" y1="292" x2="550" y2="316" stroke="#0284c7" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="882" y1="292" x2="882" y2="316" stroke="#0284c7" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <line x1="550" y1="436" x2="550" y2="468" stroke="#64748b" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrow-m)"/>
+
+  <rect x="370" y="468" width="360" height="52" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="550" y="490" class="nm">rail.status</text>
+  <text x="550" y="506" class="sb">one outcome per adapter · back to the hub</text>
+</svg>
+</body>
+</html>

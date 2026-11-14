@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payments hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    html, body { margin: 0; background: #f8fafc; }
+    svg { width: 1100px; height: 640px; display: block; }
+  </style>
+</head>
+<body>
+<svg viewBox="0 0 1100 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hub-title hub-desc">
+  <title id="hub-title">Payments hub</title>
+  <desc id="hub-desc">The payments hub only. Initiation starts the workflow. The orchestrator is the only service that advances status, calls shared checks and the ledger, and publishes the rail command. Routing, mandates and exceptions sit beside it. The query service is a read model.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2563eb"/></marker>
+    <style>
+      .nm { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sb { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #64748b; text-anchor: middle; }
+      .hd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; fill: #2563eb; }
+      .al { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; letter-spacing: 0.06em; fill: #64748b; text-anchor: middle; }
+      .lg { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #64748b; }
+    </style>
+  </defs>
+  <rect width="1100" height="640" fill="#f8fafc"/>
+
+  <!-- zone -->
+  <rect x="36" y="96" width="794" height="460" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="56" y="122" class="hd">PAYMENTS HUB</text>
+
+  <!-- connectors, behind nodes -->
+  <line x1="470" y1="72" x2="470" y2="148" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="470" y1="204" x2="470" y2="232" stroke="#2563eb" stroke-width="1.2" marker-end="url(#arrow-blue)"/>
+  <line x1="250" y1="308" x2="250" y2="348" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="470" y1="308" x2="470" y2="348" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="690" y1="308" x2="690" y2="348" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <!-- events gutter to query -->
+  <path d="M250,268 H120 V500 H250" fill="none" stroke="#64748b" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <!-- orchestrator out to the three neighbours, in the gap before x=860 -->
+  <path d="M700,232 V148 H850" fill="none" stroke="#64748b" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <line x1="710" y1="270" x2="850" y2="270" stroke="#64748b" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <path d="M710,308 H820 V428 H850" fill="none" stroke="#2563eb" stroke-width="1.2" marker-end="url(#arrow-blue)"/>
+
+  <!-- label chips sit off the stroke -->
+  <rect x="132" y="430" width="52" height="14" rx="2" fill="#dbeafe"/>
+  <text x="158" y="440" class="al">EVENTS</text>
+  <rect x="712" y="160" width="52" height="14" rx="2" fill="#f8fafc"/>
+  <text x="738" y="170" class="al">CHECKS</text>
+  <rect x="724" y="248" width="44" height="14" rx="2" fill="#f8fafc"/>
+  <text x="746" y="258" class="al">FUNDS</text>
+  <rect x="728" y="316" width="64" height="14" rx="2" fill="#dbeafe"/>
+  <text x="760" y="326" class="al">COMMAND</text>
+
+  <!-- outside: gateway -->
+  <rect x="330" y="16" width="280" height="56" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="470" y="38" class="nm">Unified payment gateway</text>
+  <text x="470" y="54" class="sb">REST in · outside this component</text>
+
+  <!-- initiation -->
+  <rect x="320" y="148" width="300" height="56" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="470" y="170" class="nm">payment-initiation-service</text>
+  <text x="470" y="186" class="sb">validate · assign ids · start workflow</text>
+
+  <!-- orchestrator focal -->
+  <rect x="250" y="232" width="460" height="76" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/>
+  <text x="480" y="260" class="nm">payment-orchestrator</text>
+  <text x="480" y="278" class="sb">only writer of status · Temporal workflow</text>
+  <text x="480" y="294" class="sb">checks, hold, rail command, then the post</text>
+
+  <!-- three beside -->
+  <rect x="140" y="348" width="220" height="56" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="250" y="370" class="nm">routing-service</text>
+  <text x="250" y="386" class="sb">reachability · cost · health</text>
+
+  <rect x="360" y="348" width="220" height="56" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="470" y="370" class="nm">mandate-service</text>
+  <text x="470" y="386" class="sb">PayTo · legacy direct debit</text>
+
+  <rect x="580" y="348" width="220" height="56" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="690" y="370" class="nm">exceptions-service</text>
+  <text x="690" y="386" class="sb">repair · four eyes</text>
+
+  <!-- query -->
+  <rect x="250" y="472" width="300" height="56" rx="6" fill="#ffffff" stroke="rgba(30,41,59,0.25)"/>
+  <text x="400" y="494" class="nm">payment-query-service</text>
+  <text x="400" y="510" class="sb">read model · workflow is the source of truth</text>
+
+  <!-- neighbours -->
+  <rect x="850" y="120" width="220" height="56" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="960" y="142" class="nm">Shared services</text>
+  <text x="960" y="158" class="sb">a decision · they do not post</text>
+
+  <rect x="850" y="242" width="220" height="56" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4 3"/>
+  <text x="960" y="264" class="nm">Accounts and ledger</text>
+  <text x="960" y="280" class="sb">hold, then post after the rail</text>
+
+  <rect x="850" y="400" width="220" height="56" rx="6" fill="#f8fafc" stroke="#2563eb" stroke-dasharray="4 3"/>
+  <text x="960" y="422" class="nm">Rail command</text>
+  <text x="960" y="438" class="sb">one per rail · no pacs here</text>
+
+  <text x="36" y="612" class="lg">SOLID BOX  this component</text>
+  <text x="280" y="612" class="lg">DASHED BOX  outside this page</text>
+  <rect x="24" y="604" width="8" height="8" rx="1" fill="#eff6ff" stroke="#2563eb"/>
+  <text x="560" y="612" class="lg">BLUE  the only writer of payment status</text>
+</svg>
+</body>
+</html>

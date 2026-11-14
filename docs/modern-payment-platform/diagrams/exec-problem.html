@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Payment Platform — The problem</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f8fafc; }
+    svg { display: block; width: 1080px; height: 460px; }
+  </style>
+</head>
+<body>
+  <svg viewBox="0 0 1080 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="exec-problem-title exec-problem-desc">
+    <title id="exec-problem-title">Each payment network is its own path</title>
+    <desc id="exec-problem-desc">NPP, BECS and SWIFT each run from the channel down to settlement. Fraud, sanctions and limits are wired in separately on every path, so the same rules are maintained more than once.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+      </marker>
+    </defs>
+    <style>
+      .card { fill: #ffffff; stroke: rgba(30,41,59,0.22); stroke-width: 1; }
+      .npp { fill: #dbeafe; stroke: #2563eb; stroke-width: 1.4; }
+      .becs { fill: #ffedd5; stroke: #c2410c; stroke-width: 1.4; }
+      .swift { fill: #ede9fe; stroke: #6d28d9; stroke-width: 1.4; }
+      .dup { fill: #fee2e2; stroke: #e11d48; stroke-width: 1.4; }
+      .name { font-family: 'Inter', system-ui, sans-serif; font-size: 16px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sub { font-family: 'Inter', system-ui, sans-serif; font-size: 13px; fill: #64748b; text-anchor: middle; }
+      .foot { font-family: 'Inter', system-ui, sans-serif; font-size: 13px; font-weight: 600; fill: #be123c; text-anchor: middle; }
+    </style>
+
+    <rect width="100%" height="100%" fill="#f8fafc"/>
+
+    <line x1="196" y1="76" x2="196" y2="92" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="196" y1="152" x2="196" y2="168" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="196" y1="228" x2="196" y2="244" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="196" y1="332" x2="196" y2="348" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+    <line x1="540" y1="76" x2="540" y2="92" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="540" y1="152" x2="540" y2="168" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="540" y1="228" x2="540" y2="244" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="540" y1="332" x2="540" y2="348" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+    <line x1="884" y1="76" x2="884" y2="92" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="884" y1="152" x2="884" y2="168" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="884" y1="228" x2="884" y2="244" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="884" y1="332" x2="884" y2="348" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+    <!-- NPP -->
+    <rect x="36" y="20" width="320" height="48" rx="8" class="npp"/>
+    <text x="196" y="50" class="name">NPP</text>
+    <rect x="36" y="96" width="320" height="48" rx="8" class="card"/>
+    <text x="196" y="126" class="name">Own channel path</text>
+    <rect x="36" y="172" width="320" height="48" rx="8" class="card"/>
+    <text x="196" y="202" class="name">Own gateway</text>
+    <rect x="36" y="248" width="320" height="76" rx="8" class="dup"/>
+    <text x="196" y="278" class="name">Own checks and rules</text>
+    <text x="196" y="300" class="sub">Fraud, sanctions, limits</text>
+    <rect x="36" y="352" width="320" height="48" rx="8" class="card"/>
+    <text x="196" y="382" class="name">Own settlement</text>
+
+    <!-- BECS -->
+    <rect x="380" y="20" width="320" height="48" rx="8" class="becs"/>
+    <text x="540" y="50" class="name">BECS</text>
+    <rect x="380" y="96" width="320" height="48" rx="8" class="card"/>
+    <text x="540" y="126" class="name">Own channel path</text>
+    <rect x="380" y="172" width="320" height="48" rx="8" class="card"/>
+    <text x="540" y="202" class="name">Own gateway</text>
+    <rect x="380" y="248" width="320" height="76" rx="8" class="dup"/>
+    <text x="540" y="278" class="name">Own checks and rules</text>
+    <text x="540" y="300" class="sub">Fraud, sanctions, limits</text>
+    <rect x="380" y="352" width="320" height="48" rx="8" class="card"/>
+    <text x="540" y="382" class="name">Own settlement</text>
+
+    <!-- SWIFT -->
+    <rect x="724" y="20" width="320" height="48" rx="8" class="swift"/>
+    <text x="884" y="50" class="name">SWIFT</text>
+    <rect x="724" y="96" width="320" height="48" rx="8" class="card"/>
+    <text x="884" y="126" class="name">Own channel path</text>
+    <rect x="724" y="172" width="320" height="48" rx="8" class="card"/>
+    <text x="884" y="202" class="name">Own gateway</text>
+    <rect x="724" y="248" width="320" height="76" rx="8" class="dup"/>
+    <text x="884" y="278" class="name">Own checks and rules</text>
+    <text x="884" y="300" class="sub">Fraud, sanctions, limits</text>
+    <rect x="724" y="352" width="320" height="48" rx="8" class="card"/>
+    <text x="884" y="382" class="name">Own settlement</text>
+
+    <text x="540" y="432" class="foot">Same checks and rules, maintained once for each network</text>
+  </svg>
+</body>
+</html>

@@ -92,7 +92,7 @@
   <div class="frame">
     <p class="eyebrow">Layered architecture · Australian bank · Greenfield</p>
     <h1>Modern payment platform: one rail-agnostic hub, every rail</h1>
-    <p class="subtitle">Read top to bottom to follow a payment. The hub speaks ISO 20022 and calls the services beside it. Rail adapters absorb each scheme's differences, post-processing consumes status and postings, and the foundation underpins everything.</p>
+    <p class="subtitle">Read top to bottom to follow a payment. Channels enter the unified payment gateway. The hub calls shared services, sends the payment to one rail adapter, and posts to the ledger after the rail responds.</p>
 
     <div class="diagram">
     <svg viewBox="0 0 1280 1000" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="payments-layers-title payments-layers-desc">
@@ -104,8 +104,20 @@
         <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2563eb"/></marker>
         <style>
           .zone       { fill: #f1f5f9; stroke: rgba(30,41,59,0.12); stroke-width: 1; }
-          .zone-focal { fill: rgba(59,130,246,0.08); stroke: #3b82f6; stroke-width: 1.2; }
+          .zone-channel { fill: #e0f2fe; stroke: #0284c7; stroke-width: 1.3; }
+          .zone-edge  { fill: #eef2ff; stroke: #4f46e5; stroke-width: 1.3; }
+          .zone-shared { fill: #d1fae5; stroke: #059669; stroke-width: 1.3; }
+          .zone-focal { fill: #dbeafe; stroke: #2563eb; stroke-width: 1.5; }
+          .zone-ledger { fill: #ffedd5; stroke: #ea580c; stroke-width: 1.3; }
+          .zone-rail  { fill: #eff6ff; stroke: #3b82f6; stroke-width: 1.3; }
+          .zone-post  { fill: #f1f5f9; stroke: #64748b; stroke-width: 1.2; }
           .zone-ext   { fill: rgba(30,41,59,0.03); stroke: rgba(30,41,59,0.30); stroke-width: 0.8; stroke-dasharray: 6 3; }
+          .hd-channel { fill: #0369a1; }
+          .hd-edge { fill: #4338ca; }
+          .hd-shared { fill: #047857; }
+          .hd-ledger { fill: #c2410c; }
+          .hd-rail { fill: #1d4ed8; }
+          .hd-post { fill: #475569; }
           .chip       { fill: #ffffff; stroke: rgba(30,41,59,0.25); stroke-width: 1; }
           .chip-ext   { fill: #f8fafc; stroke: rgba(30,41,59,0.30); stroke-width: 0.8; stroke-dasharray: 4 3; }
           .nm  { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
@@ -164,8 +176,8 @@
       <text x="968" y="645" class="al">STATUS</text>
 
       <!-- ============ 01 · CHANNELS ============ -->
-      <rect x="40" y="40" width="904" height="88" rx="8" class="zone"/>
-      <text x="56" y="58" class="hd"><tspan class="ix">01 · </tspan>CHANNELS</text>
+      <rect x="40" y="40" width="904" height="88" rx="8" class="zone-channel"/>
+      <text x="56" y="58" class="hd hd-channel"><tspan class="ix">01 · </tspan>CHANNELS</text>
       <text x="928" y="58" class="ds">WHO STARTS A PAYMENT</text>
 
       <rect x="56"  y="68" width="212" height="48" rx="6" class="chip"/>
@@ -185,9 +197,9 @@
       <text x="822" y="104" class="sb">PayTo initiators · CDR</text>
 
       <!-- ============ 02 · EDGE ============ -->
-      <rect x="40" y="160" width="904" height="88" rx="8" class="zone"/>
-      <text x="56" y="178" class="hd"><tspan class="ix">02 · </tspan>EDGE</text>
-      <text x="928" y="178" class="ds">ONE FRONT DOOR</text>
+      <rect x="40" y="160" width="904" height="88" rx="8" class="zone-edge"/>
+      <text x="56" y="178" class="hd hd-edge"><tspan class="ix">02 · </tspan>UNIFIED PAYMENT GATEWAY</text>
+      <text x="928" y="178" class="ds">ONE PAYMENTS API</text>
 
       <rect x="52"  y="188" width="288" height="48" rx="6" class="chip"/>
       <text x="196" y="208" class="nm">API gateway</text>
@@ -220,8 +232,8 @@
       <text x="1020" y="198" class="rl">AP+ · AusPayNet · SWIFT CSP</text>
 
       <!-- ============ 04 · SHARED SERVICES ============ -->
-      <rect x="40" y="280" width="256" height="296" rx="8" class="zone"/>
-      <text x="56" y="298" class="hd"><tspan class="ix">04 · </tspan>SHARED SERVICES</text>
+      <rect x="40" y="280" width="256" height="296" rx="8" class="zone-shared"/>
+      <text x="56" y="298" class="hd hd-shared"><tspan class="ix">04 · </tspan>SHARED SERVICES</text>
 
       <rect x="52" y="312" width="232" height="44" rx="6" class="chip"/>
       <text x="168" y="330" class="nm">Reference data</text>
@@ -233,7 +245,7 @@
 
       <rect x="52" y="416" width="232" height="44" rx="6" class="chip"/>
       <text x="168" y="434" class="nm">Financial crime</text>
-      <text x="168" y="450" class="sb">fraud · scams · sanctions · AML</text>
+      <text x="168" y="450" class="sb">fraud · scams · sanctions</text>
 
       <rect x="52" y="468" width="232" height="44" rx="6" class="chip"/>
       <text x="168" y="486" class="nm">Limits &amp; approvals</text>
@@ -269,8 +281,8 @@
       <text x="492" y="554" class="sb">ops queues · four-eyes</text>
 
       <!-- ============ 05 · ACCOUNTS, LEDGER & LIQUIDITY ============ -->
-      <rect x="688" y="280" width="256" height="296" rx="8" class="zone"/>
-      <text x="704" y="298" class="hd"><tspan class="ix">05 · </tspan>ACCOUNTS · LEDGER · LIQUIDITY</text>
+      <rect x="688" y="280" width="256" height="296" rx="8" class="zone-ledger"/>
+      <text x="704" y="298" class="hd hd-ledger"><tspan class="ix">05 · </tspan>ACCOUNTS · LEDGER · LIQUIDITY</text>
 
       <rect x="700" y="312" width="232" height="56" rx="6" class="chip"/>
       <text x="816" y="336" class="nm">Core banking</text>
@@ -289,8 +301,8 @@
       <text x="816" y="544" class="sb">positions · cash forecasts</text>
 
       <!-- ============ 06 · RAIL ADAPTERS ============ -->
-      <rect x="40" y="608" width="904" height="96" rx="8" class="zone"/>
-      <text x="56" y="626" class="hd"><tspan class="ix">06 · </tspan>RAIL ADAPTERS</text>
+      <rect x="40" y="608" width="904" height="96" rx="8" class="zone-rail"/>
+      <text x="56" y="626" class="hd hd-rail"><tspan class="ix">06 · </tspan>RAIL ADAPTERS</text>
       <text x="928" y="626" class="ds">NEW RAIL = NEW ADAPTER</text>
 
       <rect x="52"  y="636" width="140" height="56" rx="6" class="chip"/>
@@ -334,8 +346,8 @@
       <text x="844" y="784" class="nm">SWIFT network</text>
 
       <!-- ============ 07 · POST-PROCESSING & OPS ============ -->
-      <rect x="992" y="280" width="248" height="528" rx="8" class="zone"/>
-      <text x="1008" y="298" class="hd"><tspan class="ix">07 · </tspan>POST-PROCESSING &amp; OPS</text>
+      <rect x="992" y="280" width="248" height="528" rx="8" class="zone-post"/>
+      <text x="1008" y="298" class="hd hd-post"><tspan class="ix">07 · </tspan>POST-PROCESSING &amp; OPS</text>
 
       <rect x="1004" y="312" width="224" height="64" rx="6" class="chip"/>
       <text x="1116" y="340" class="nm">Reconciliation</text>
@@ -362,8 +374,8 @@
       <text x="1116" y="776" class="sb">one view · every rail</text>
 
       <!-- ============ 08 · PLATFORM FOUNDATION ============ -->
-      <rect x="40" y="840" width="1200" height="88" rx="8" class="zone"/>
-      <text x="56" y="858" class="hd"><tspan class="ix">08 · </tspan>PLATFORM FOUNDATION</text>
+      <rect x="40" y="840" width="1200" height="88" rx="8" class="zone-post"/>
+      <text x="56" y="858" class="hd hd-post"><tspan class="ix">08 · </tspan>PLATFORM FOUNDATION</text>
       <text x="1224" y="858" class="ds">CROSS-CUTTING · 24/7/365 · NO MAINTENANCE WINDOWS</text>
 
       <rect x="56"   y="868" width="188" height="48" rx="6" class="chip"/>
@@ -434,7 +446,7 @@
         <p class="eyebrow">Where it gets hard</p>
         <div class="card-header"><span class="card-dot"></span><h3>Three pressure points</h3></div>
         <ul>
-          <li>Fraud and sanctions checks inside NPP's seconds-long budget.</li>
+          <li>Fraud and sanctions checks on the accept path, inside the scheme's time limit.</li>
           <li>A 24/7 core, ledger and liquidity position.</li>
           <li>Reconciling across six rails.</li>
         </ul>

@@ -8,13 +8,19 @@ sidebar_label: Business use case
 
 **Context:** An Australian bank that holds a banking licence (an authorised deposit-taking institution, or ADI) and connects directly to the Australian payment networks and to SWIFT for international payments. It is building a new payments platform from scratch rather than extending older systems.
 
-![Business value map: why now, what we build, what we get and how we measure it](../diagrams/business-value-map.png)
+---
 
-Read it left to right. Market and regulatory drivers shape six platform capabilities. Those capabilities deliver benefits across customer, revenue, cost, risk, compliance and resilience, and each benefit is paired with the measure that proves it. Value is released in four phases. [Open the full diagram](pathname:///modern-payment-platform/diagrams/business-value-map.html).
+## 1. How payments work today
+
+Each payment network is its own path, from the channel down to settlement. Fraud, sanctions, limits and the other shared checks are wired in separately on every path. The same rules are duplicated, and every change is maintained once for each network.
+
+![Three separate paths. NPP, BECS and SWIFT each have their own channel path, gateway, checks and settlement. The same fraud, sanctions and limits are maintained on every path.](../diagrams/exec-problem.png)
+
+NPP, BECS and SWIFT are shown. PayTo, BPAY and high-value payments work the same way: a separate path, a separate copy of the checks, and a separate set of rules.
 
 ---
 
-## 1. Why now
+## 2. Why now
 
 | Driver | What is happening | What it means for the bank |
 |--------|-------------------|----------------------------|
@@ -27,7 +33,22 @@ Read it left to right. Market and regulatory drivers shape six platform capabili
 
 ---
 
-## 2. Who benefits
+## 3. What we will build
+
+Every channel and every payment network connects to one hub.
+
+![Channels enter a unified payment gateway. The payments hub calls shared services, sends the payment to one rail, and posts to the accounts and ledger after the rail responds.](../diagrams/exec-solution.png)
+
+- **Unified payment gateway.** Mobile, internet banking, business APIs and bulk files use the same Payments API.
+- **Shared services.** Payee verification, fraud and scam scoring, sanctions screening, limits, and pricing and foreign exchange are built once and called from the hub. A rule is written in one place, and a new network inherits the same controls.
+- **One adapter per network.** The hub sends the payment to NPP, PayTo, BECS, BPAY, high value or SWIFT. After the rail responds, the hub posts to the accounts and ledger.
+- **Always on.** Multiple sites, no maintenance windows, able to run on any major cloud or on premises.
+
+The bank buys sanctions screening, the fraud platform and the network gateways, and places them behind the shared services. It builds the orchestration, the routing and the customer experience.
+
+---
+
+## 4. Who benefits
 
 | Stakeholder | Pain today | With the new platform |
 |-------------|------------|-----------------------|
@@ -37,11 +58,11 @@ Read it left to right. Market and regulatory drivers shape six platform capabili
 | **Payment operations** | Several systems and consoles, manual repairs, late visibility of problems | One operations console for every rail, automated exception queues, live dashboards |
 | **Risk, fraud and compliance** | Controls differ by channel and rail. Reporting is manual | The same fraud, scam and sanctions checks on every payment, automated AUSTRAC reporting and a full audit trail |
 | **Treasury** | Limited intraday view of settlement liquidity | Real-time view of the settlement account at the Reserve Bank and overseas account balances |
-| **Technology** | Each new payment type means changes in several places | Add a new payment network by adding one adapter. Release safely without downtime |
+| **Technology** | Each network is its own path. Checks and rules are copied, so a change is made once per network | One gateway, one hub, shared checks written once, and one adapter per network |
 
 ---
 
-## 3. Business use cases
+## 5. Business use cases
 
 | # | Use case | Payment network | Customer outcome |
 |---|----------|-----------------|------------------|
@@ -56,7 +77,11 @@ Read it left to right. Market and regulatory drivers shape six platform capabili
 
 ---
 
-## 4. Benefits
+## 6. Benefits
+
+![Business value map: why now in red, what we build in blue, what the bank gets in green, and how it is measured in amber. Value is released in four phases.](../diagrams/business-value-map.png)
+
+Read it left to right. The reasons to act shape one platform: a unified payment gateway, a hub that sends each payment to one rail, and shared services written once. The hub posts to the ledger after the rail responds. Each benefit has a measure, and value is released in four phases. [Open the full diagram](pathname:///modern-payment-platform/diagrams/business-value-map.html).
 
 | Area | Benefit | How the platform delivers it | How we measure it |
 |------|---------|------------------------------|-------------------|
@@ -73,7 +98,7 @@ Read it left to right. Market and regulatory drivers shape six platform capabili
 
 ---
 
-## 5. Measures of success
+## 7. Measures of success
 
 Illustrative targets, to be confirmed with the business.
 
@@ -89,34 +114,34 @@ Illustrative targets, to be confirmed with the business.
 
 ---
 
-## 6. Cost of not acting
+## 8. Cost of not acting
 
 - **Two migrations instead of one.** Building on BECS means migrating again when BECS closes.
 - **Growing scam liability.** Without real-time controls, the bank carries more of the cost of scams under the new framework.
 - **Lost customers.** Customers move their primary account, and their salary, to banks with better payments.
-- **Rising run cost.** Every rail-specific system needs its own upgrades, security fixes, staff and vendor contracts.
+- **Rising run cost.** Every rail-specific path keeps its own checks, rules, upgrades, security fixes, staff and vendor contracts.
 - **Resilience risk.** Batch-era systems with maintenance windows struggle to meet CPS 230 tolerance levels for a 24/7 service.
 
 ---
 
-## 7. Phased value delivery
+## 9. Phased value delivery
 
 | Phase | What goes live | Value released |
 |-------|---------------|----------------|
-| **1. Instant payments** | Payments hub, NPP with Osko and PayID, real-time fraud and sanctions checks, core banking integration | Real-time payments for retail customers. Foundation for everything else |
+| **1. Instant payments** | Unified payment gateway, payments hub, shared services for fraud and sanctions, NPP with Osko and PayID, core banking integration. The hub sends the payment and posts to the ledger after the rail responds | Real-time payments for retail customers. Foundation for everything else |
 | **2. Control and safety** | PayTo, Confirmation of Payee, business payment APIs, bulk payments sent over NPP first | New merchant revenue. Fewer scams. Real-time payroll for business customers |
 | **3. Global** | SWIFT with gpi tracking and FX, high-value RTGS payments | Transparent international payments and FX revenue. One platform for treasury |
 | **4. Complete** | BECS and BPAY adapters, retirement of any older payment systems, data products for business customers | Lowest run cost, ready for the BECS wind-down, insight-led products |
 
 ---
 
-## 8. Risks and how they are managed
+## 10. Risks and how they are managed
 
 | Risk | Mitigation |
 |------|------------|
 | Delivery is large and complex | Release value in phases. Each phase stands on its own |
-| Fraud and sanctions checks slow instant payments | Strict time budget for each check, tested at peak load |
-| Dependence on vendors for screening and scheme connectivity | Vendor products sit behind adapters, so they can be replaced. Contracts managed under CPS 230 |
+| Fraud and sanctions checks slow instant payments | Each check is tested at peak volumes, and a check that does not answer has a defined outcome |
+| Dependence on vendors for screening and scheme connectivity | Vendor products sit behind the shared services, so they can be replaced. Contracts managed under CPS 230 |
 | Skills for a 24/7 event-driven platform | Platform team with clear ownership, runbooks and production readiness reviews |
 | Customer change (for example, moving direct debits to PayTo) | Phased migration with clear customer communications and support |
 
@@ -124,5 +149,5 @@ Illustrative targets, to be confirmed with the business.
 
 ## Related pages
 
-- [Reference architecture and solution design](./02-reference-architecture.md): the services, technology and flows behind these benefits.
-- [Component deep dive](./03-component-deep-dive.md): every component explained, with the Australian rail details.
+- [Executive brief](./00-exec-brief.md): a 10-minute version of this page for executives.
+- [Reference architecture and solution design](./02-reference-architecture/index.md): the services, technology and flows behind these benefits. Its child pages cover [clients](./02-reference-architecture/01-clients.md), the [unified payment gateway](./02-reference-architecture/02-unified-payment-gateway.md), the [payments hub](./02-reference-architecture/03-payments-hub.md), [rails](./02-reference-architecture/04-rails.md), [accounts and ledger](./02-reference-architecture/05-accounts-and-ledger.md) and [shared services](./02-reference-architecture/06-shared-services.md).

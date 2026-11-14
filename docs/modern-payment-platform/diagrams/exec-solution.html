@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Payment Platform — Solution</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f8fafc; }
+    svg { display: block; width: 1080px; height: 640px; }
+  </style>
+</head>
+<body>
+  <svg viewBox="0 0 1080 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="exec-solution-title exec-solution-desc">
+    <title id="exec-solution-title">The hub sends each payment to a rail, then posts the ledger</title>
+    <desc id="exec-solution-desc">Channels enter a unified payment gateway. The payments hub calls shared services, then the hub sends the payment to one rail. After the rail responds, the hub posts to the accounts and ledger.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+      </marker>
+      <marker id="arrow-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#059669"/>
+      </marker>
+    </defs>
+    <style>
+      .card  { fill: #ffffff; stroke: rgba(30,41,59,0.25); stroke-width: 1; }
+      .chan  { fill: #e0f2fe; stroke: #0284c7; stroke-width: 1.2; }
+      .gate  { fill: #eef2ff; stroke: #4f46e5; stroke-width: 1.3; }
+      .focal { fill: #dbeafe; stroke: #2563eb; stroke-width: 1.6; }
+      .shared { fill: #d1fae5; stroke: #059669; stroke-width: 1.4; }
+      .railbox { fill: #eff6ff; stroke: #3b82f6; stroke-width: 1.2; }
+      .ledger { fill: #ffedd5; stroke: #ea580c; stroke-width: 1.4; }
+      .name  { font-family: 'Inter', system-ui, sans-serif; font-size: 16px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sub   { font-family: 'Inter', system-ui, sans-serif; font-size: 13px; fill: #64748b; text-anchor: middle; }
+      .ch    { font-family: 'Inter', system-ui, sans-serif; font-size: 13px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .rail  { font-family: 'Inter', system-ui, sans-serif; font-size: 14px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .side-title { font-family: 'Inter', system-ui, sans-serif; font-size: 16px; font-weight: 600; fill: #1e293b; }
+      .item  { font-family: 'Inter', system-ui, sans-serif; font-size: 13px; fill: #1e293b; }
+      .tag   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; fill: #64748b; }
+      .lbl   { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; }
+    </style>
+
+    <rect width="100%" height="100%" fill="#f8fafc"/>
+
+    <line x1="366" y1="92" x2="366" y2="104" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="366" y1="184" x2="366" y2="196" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="708" y1="244" x2="740" y2="244" stroke="#059669" stroke-width="1.4" marker-end="url(#arrow-green)"/>
+    <line x1="366" y1="292" x2="366" y2="376" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="366" y1="484" x2="366" y2="536" stroke="#64748b" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+    <rect x="32" y="20" width="158" height="64" rx="8" class="chan"/>
+    <text x="111" y="56" class="ch">Mobile</text>
+    <rect x="202" y="20" width="158" height="64" rx="8" class="chan"/>
+    <text x="281" y="56" class="ch">Internet banking</text>
+    <rect x="372" y="20" width="158" height="64" rx="8" class="chan"/>
+    <text x="451" y="56" class="ch">Business APIs</text>
+    <rect x="542" y="20" width="158" height="64" rx="8" class="chan"/>
+    <text x="621" y="56" class="ch">Bulk files</text>
+
+    <rect x="32" y="112" width="668" height="64" rx="8" class="gate"/>
+    <text x="366" y="138" class="name">Unified payment gateway</text>
+    <text x="366" y="158" class="sub">One API for every channel</text>
+
+    <rect x="32" y="204" width="668" height="80" rx="8" class="focal"/>
+    <text x="366" y="236" class="name">Payments hub</text>
+    <text x="366" y="258" class="sub">Sends each payment to one rail</text>
+
+    <rect x="748" y="204" width="300" height="168" rx="8" class="shared"/>
+    <text x="772" y="232" class="side-title">Shared services</text>
+    <circle cx="780" cy="258" r="3" fill="#059669"/>
+    <text x="794" y="263" class="item">Payee verification</text>
+    <circle cx="780" cy="282" r="3" fill="#059669"/>
+    <text x="794" y="287" class="item">Fraud scoring</text>
+    <circle cx="780" cy="306" r="3" fill="#059669"/>
+    <text x="794" y="311" class="item">Sanctions screening</text>
+    <circle cx="780" cy="330" r="3" fill="#059669"/>
+    <text x="794" y="335" class="item">Limits</text>
+    <circle cx="780" cy="354" r="3" fill="#059669"/>
+    <text x="794" y="359" class="item">Foreign exchange</text>
+
+    <rect x="386" y="318" width="168" height="22" rx="4" fill="#f8fafc"/>
+    <text x="394" y="333" class="lbl">Hub sends the payment</text>
+
+    <text x="32" y="384" class="tag">ONE ADAPTER PER NETWORK</text>
+
+    <rect x="32" y="396" width="102" height="76" rx="8" class="railbox"/>
+    <text x="83" y="428" class="rail">NPP</text>
+    <text x="83" y="450" class="sub">Instant</text>
+    <rect x="142" y="396" width="102" height="76" rx="8" class="railbox"/>
+    <text x="193" y="428" class="rail">PayTo</text>
+    <text x="193" y="450" class="sub">Mandates</text>
+    <rect x="252" y="396" width="102" height="76" rx="8" class="railbox"/>
+    <text x="303" y="428" class="rail">BECS</text>
+    <text x="303" y="450" class="sub">Batch</text>
+    <rect x="362" y="396" width="102" height="76" rx="8" class="railbox"/>
+    <text x="413" y="428" class="rail">BPAY</text>
+    <text x="413" y="450" class="sub">Bills</text>
+    <rect x="472" y="396" width="114" height="76" rx="8" class="railbox"/>
+    <text x="529" y="428" class="rail">High value</text>
+    <text x="529" y="450" class="sub">Large payments</text>
+    <rect x="594" y="396" width="106" height="76" rx="8" class="railbox"/>
+    <text x="647" y="428" class="rail">SWIFT</text>
+    <text x="647" y="450" class="sub">Cross-border</text>
+
+    <rect x="386" y="498" width="248" height="22" rx="4" fill="#f8fafc"/>
+    <text x="394" y="513" class="lbl">Hub posts after the rail responds</text>
+
+    <rect x="32" y="548" width="668" height="68" rx="8" class="ledger"/>
+    <text x="366" y="576" class="name">Accounts and ledger</text>
+    <text x="366" y="598" class="sub">Posted by the hub, after the rail call</text>
+  </svg>
+</body>
+</html>
