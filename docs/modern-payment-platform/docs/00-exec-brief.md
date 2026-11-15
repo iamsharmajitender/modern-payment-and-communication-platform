@@ -74,9 +74,3 @@ Each release stands on its own.
 | Dependence on vendors | Vendor products sit behind the shared services and can be replaced. Contracts are managed under CPS 230 |
 
 Waiting has a cost. BECS closing means a second migration. Scam losses grow. Customers move their main account to a bank with better payments. Each network-specific system keeps its own upgrades, staff and vendor contracts.
-
-## Decision required
-
-1. Endorse one payments platform as the direction for all payment networks.
-2. Approve the first release, instant payments, to proceed.
-3. Name an executive sponsor and the business owner for the success measures.

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer communication — the problem</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f8fafc; }
+    svg { display: block; width: 1080px; height: 560px; }
+  </style>
+</head>
+<body>
+  <svg viewBox="0 0 1080 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+    <title id="t">Each channel is its own notification stack</title>
+    <desc id="d">Product systems integrate separately with email, SMS and physical mail. Each stack has its own templates, contact extract, status and retries. There is no shared tracking id.</desc>
+    <style>
+      .card { fill: #ffffff; stroke: #fb7185; stroke-width: 1.4; }
+      .bar { fill: #fff1f2; stroke: #fb7185; stroke-width: 1.2; }
+      .row { fill: #fff1f2; }
+      .name { font-family: 'Inter', system-ui, sans-serif; font-size: 18px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sub { font-family: 'Inter', system-ui, sans-serif; font-size: 14px; fill: #64748b; text-anchor: middle; }
+      .item { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; font-weight: 500; fill: #1e293b; text-anchor: middle; }
+      .foot { font-family: 'Inter', system-ui, sans-serif; font-size: 14px; fill: #64748b; text-anchor: middle; }
+    </style>
+    <rect width="100%" height="100%" fill="#f8fafc"/>
+    <rect x="40" y="28" width="1000" height="56" rx="8" class="bar"/>
+    <text x="540" y="62" class="name">Product systems, each integrating separately</text>
+
+    <line x1="190" y1="84" x2="190" y2="112" stroke="#fb7185" stroke-width="1.4"/>
+    <line x1="540" y1="84" x2="540" y2="112" stroke="#fb7185" stroke-width="1.4"/>
+    <line x1="890" y1="84" x2="890" y2="112" stroke="#fb7185" stroke-width="1.4"/>
+
+    <rect x="40" y="112" width="300" height="360" rx="10" class="card"/>
+    <rect x="390" y="112" width="300" height="360" rx="10" class="card"/>
+    <rect x="740" y="112" width="300" height="360" rx="10" class="card"/>
+
+    <text x="190" y="156" class="name">Email stack</text>
+    <text x="540" y="156" class="name">SMS stack</text>
+    <text x="890" y="156" class="name">Physical mail stack</text>
+    <text x="190" y="178" class="sub">Its own pipeline</text>
+    <text x="540" y="178" class="sub">Its own pipeline</text>
+    <text x="890" y="178" class="sub">Its own pipeline</text>
+
+    <rect x="64" y="204" width="252" height="52" rx="6" class="row"/>
+    <rect x="64" y="268" width="252" height="52" rx="6" class="row"/>
+    <rect x="64" y="332" width="252" height="52" rx="6" class="row"/>
+    <rect x="64" y="396" width="252" height="52" rx="6" class="row"/>
+    <text x="190" y="236" class="item">Own templates</text>
+    <text x="190" y="300" class="item">Own contact extract</text>
+    <text x="190" y="364" class="item">Own status</text>
+    <text x="190" y="428" class="item">Own retries</text>
+
+    <rect x="414" y="204" width="252" height="52" rx="6" class="row"/>
+    <rect x="414" y="268" width="252" height="52" rx="6" class="row"/>
+    <rect x="414" y="332" width="252" height="52" rx="6" class="row"/>
+    <rect x="414" y="396" width="252" height="52" rx="6" class="row"/>
+    <text x="540" y="236" class="item">Own templates</text>
+    <text x="540" y="300" class="item">Own contact extract</text>
+    <text x="540" y="364" class="item">Own status</text>
+    <text x="540" y="428" class="item">Own retries</text>
+
+    <rect x="764" y="204" width="252" height="52" rx="6" class="row"/>
+    <rect x="764" y="268" width="252" height="52" rx="6" class="row"/>
+    <rect x="764" y="332" width="252" height="52" rx="6" class="row"/>
+    <rect x="764" y="396" width="252" height="52" rx="6" class="row"/>
+    <text x="890" y="236" class="item">Own templates</text>
+    <text x="890" y="300" class="item">Own contact extract</text>
+    <text x="890" y="364" class="item">Own status</text>
+    <text x="890" y="428" class="item">Own retries</text>
+
+    <text x="540" y="516" class="foot">No shared tracking id. A future-dated letter is a different system from an SMS that must leave now.</text>
+  </svg>
+</body>
+</html>

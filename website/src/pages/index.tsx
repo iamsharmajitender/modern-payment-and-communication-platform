@@ -28,6 +28,13 @@ const topics: Topic[] = [
     to: '/docs/large-pdf-render/docs/exec-brief',
     tags: ['Documents', 'CDN', 'Mobile'],
   },
+  {
+    title: 'Customer communication platform',
+    description:
+      'One notification path for every product system: a front door with ingestion, outbox and release, a core brain, and one adapter each for email, SMS, push and physical mail.',
+    to: '/docs/customer-communication-platform/docs/exec-brief',
+    tags: ['Front door', 'Core brain', 'Adapters'],
+  },
 ];
 
 function TopicCard({title, description, to, tags}: Topic) {

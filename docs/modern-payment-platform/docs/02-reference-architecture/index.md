@@ -456,7 +456,6 @@ Managed equivalents for a team that does not want to operate the stack above. Th
 | Service mesh | Istio on EKS | Istio-based service mesh add-on for AKS | Cloud Service Mesh |
 | Observability | CloudWatch, Managed Prometheus, Managed Grafana | Azure Monitor, Managed Prometheus, Managed Grafana | Cloud Monitoring, Managed Service for Prometheus |
 | Object storage | Amazon S3 | Azure Blob Storage | Cloud Storage |
-| Analytics | S3 with Iceberg, Athena or EMR | ADLS with Fabric or Databricks | BigQuery with BigLake |
 | Private links to the scheme data centres | AWS Direct Connect | Azure ExpressRoute | Cloud Interconnect |
 | DDoS protection | AWS Shield Advanced | Azure DDoS Network Protection | Cloud Armor |
 | Web application firewall | AWS WAF on CloudFront | Azure Web Application Firewall on Front Door | Cloud Armor security policy |

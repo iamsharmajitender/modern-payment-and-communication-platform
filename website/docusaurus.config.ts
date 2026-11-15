@@ -80,7 +80,24 @@ const config: Config = {
       },
     },
     mermaid: {
-      theme: {light: 'neutral', dark: 'dark'},
+      theme: {light: 'base', dark: 'dark'},
+      options: {
+        themeVariables: {
+          actorBkg: '#dbeafe',
+          actorBorder: '#2563eb',
+          actorTextColor: '#1e293b',
+          actorLineColor: '#64748b',
+          signalColor: '#1e293b',
+          signalTextColor: '#1e293b',
+          labelBoxBkgColor: '#eff6ff',
+          labelTextColor: '#1e293b',
+          noteBkgColor: '#fffbeb',
+          noteTextColor: '#1e293b',
+          noteBorderColor: '#d97706',
+          activationBkgColor: '#e0f2fe',
+          activationBorderColor: '#0284c7',
+        },
+      },
     },
   } satisfies Preset.ThemeConfig,
 };

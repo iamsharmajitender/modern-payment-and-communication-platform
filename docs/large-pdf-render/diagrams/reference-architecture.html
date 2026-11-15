@@ -40,7 +40,19 @@
         <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2563eb"/></marker>
         <style>
           .zone       { fill: #f1f5f9; stroke: rgba(30,41,59,0.12); stroke-width: 1; }
-          .zone-focal { fill: rgba(59,130,246,0.08); stroke: #3b82f6; stroke-width: 1.2; }
+          .zone-publish { fill: #e0f2fe; stroke: #0284c7; stroke-width: 1.3; }
+          .zone-ingest { fill: #d1fae5; stroke: #059669; stroke-width: 1.3; }
+          .zone-data { fill: #ffedd5; stroke: #ea580c; stroke-width: 1.3; }
+          .zone-api { fill: #eef2ff; stroke: #4f46e5; stroke-width: 1.3; }
+          .zone-focal { fill: #dbeafe; stroke: #2563eb; stroke-width: 1.4; }
+          .zone-apps { fill: #fdf2f8; stroke: #db2777; stroke-width: 1.3; }
+          .zone-platform { fill: #ccfbf1; stroke: #0f766e; stroke-width: 1.3; }
+          .hd-publish { fill: #0369a1; }
+          .hd-ingest { fill: #047857; }
+          .hd-data { fill: #c2410c; }
+          .hd-api { fill: #4338ca; }
+          .hd-apps { fill: #be185d; }
+          .hd-platform { fill: #0f766e; }
           .chip       { fill: #ffffff; stroke: rgba(30,41,59,0.25); stroke-width: 1; }
           .chip-store { fill: rgba(30,41,59,0.05); stroke: #64748b; stroke-width: 1; }
           .chip-opt   { fill: rgba(30,41,59,0.02); stroke: rgba(30,41,59,0.20); stroke-width: 1; stroke-dasharray: 4 3; }
@@ -85,8 +97,8 @@
       <text x="1016" y="393" class="al">RANGE GET</text>
 
       <!-- ============ 01 · PUBLISHING ============ -->
-      <rect x="40" y="40" width="288" height="136" rx="8" class="zone"/>
-      <text x="56" y="58" class="hd"><tspan class="ix">01 · </tspan>PUBLISHING</text>
+      <rect x="40" y="40" width="288" height="136" rx="8" class="zone-publish"/>
+      <text x="56" y="58" class="hd hd-publish"><tspan class="ix">01 · </tspan>PUBLISHING</text>
       <text x="312" y="58" class="ds">INTERNAL</text>
       <rect x="52" y="68" width="264" height="40" rx="6" class="chip"/>
       <text x="184" y="85" class="nm">admin-portal</text>
@@ -96,8 +108,8 @@
       <text x="184" y="147" class="sb">resumable multipart upload</text>
 
       <!-- ============ 02 · INGESTION PIPELINE ============ -->
-      <rect x="40" y="208" width="288" height="296" rx="8" class="zone"/>
-      <text x="56" y="226" class="hd"><tspan class="ix">02 · </tspan>INGESTION PIPELINE</text>
+      <rect x="40" y="208" width="288" height="296" rx="8" class="zone-ingest"/>
+      <text x="56" y="226" class="hd hd-ingest"><tspan class="ix">02 · </tspan>INGESTION PIPELINE</text>
       <text x="312" y="226" class="ds">WORKFLOW</text>
       <rect x="52" y="240" width="264" height="28" rx="6" class="chip-store"/>
       <text x="64"  y="258" class="nml">1 · quarantine-store</text>
@@ -125,8 +137,8 @@
       <text x="304" y="482" class="sbr">chunks · thumbnails</text>
 
       <!-- ============ 03 · DOCUMENT DATA ============ -->
-      <rect x="392" y="40" width="240" height="464" rx="8" class="zone"/>
-      <text x="408" y="58" class="hd"><tspan class="ix">03 · </tspan>DOCUMENT DATA</text>
+      <rect x="392" y="40" width="240" height="464" rx="8" class="zone-data"/>
+      <text x="408" y="58" class="hd hd-data"><tspan class="ix">03 · </tspan>DOCUMENT DATA</text>
       <rect x="404" y="72" width="216" height="84" rx="6" class="chip-store"/>
       <text x="512" y="104" class="nm">PostgreSQL</text>
       <text x="512" y="120" class="sb">metadata · versions</text>
@@ -145,8 +157,8 @@
       <text x="512" y="458" class="sb">immutable /v{n}/ keys</text>
 
       <!-- ============ 04 · DOCUMENT API ============ -->
-      <rect x="696" y="40" width="288" height="200" rx="8" class="zone"/>
-      <text x="712" y="58" class="hd"><tspan class="ix">04 · </tspan>DOCUMENT API</text>
+      <rect x="696" y="40" width="288" height="200" rx="8" class="zone-api"/>
+      <text x="712" y="58" class="hd hd-api"><tspan class="ix">04 · </tspan>DOCUMENT API</text>
       <text x="968" y="58" class="ds">WHO MAY READ</text>
       <rect x="708" y="72" width="264" height="28" rx="6" class="chip"/>
       <text x="720" y="90" class="nml">document-service</text>
@@ -179,8 +191,8 @@
       <text x="840" y="474" class="sb">rate limits · bot control</text>
 
       <!-- ============ 06 · CUSTOMER APPS ============ -->
-      <rect x="1048" y="40" width="192" height="464" rx="8" class="zone"/>
-      <text x="1064" y="58" class="hd"><tspan class="ix">06 · </tspan>CUSTOMER APPS</text>
+      <rect x="1048" y="40" width="192" height="464" rx="8" class="zone-apps"/>
+      <text x="1064" y="58" class="hd hd-apps"><tspan class="ix">06 · </tspan>CUSTOMER APPS</text>
       <rect x="1060" y="80"  width="168" height="64" rx="6" class="chip"/>
       <text x="1144" y="108" class="nm">Desktop web</text>
       <text x="1144" y="124" class="sb">PDF.js · range mode</text>
@@ -195,8 +207,8 @@
       <text x="1144" y="436" class="sb">optional · encrypted</text>
 
       <!-- ============ 07 · PLATFORM ============ -->
-      <rect x="40" y="536" width="1200" height="80" rx="8" class="zone"/>
-      <text x="56" y="554" class="hd"><tspan class="ix">07 · </tspan>PORTABLE PLATFORM</text>
+      <rect x="40" y="536" width="1200" height="80" rx="8" class="zone-platform"/>
+      <text x="56" y="554" class="hd hd-platform"><tspan class="ix">07 · </tspan>PORTABLE PLATFORM</text>
       <text x="1224" y="554" class="ds">RUNS ON ANY CLOUD OR ON PREMISES</text>
       <rect x="56"   y="564" width="188" height="40" rx="6" class="chip"/>
       <text x="150"  y="581" class="nm">Kubernetes</text>

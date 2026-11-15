@@ -8,7 +8,7 @@ Reference architectures and solution designs for three problems, published as a 
 |---|---------|--------|---------|
 | 1 | Modern payment platform | Reference architecture and component pages written | [docs/modern-payment-platform](docs/modern-payment-platform/docs/02-reference-architecture/index.md) |
 | 2 | Large PDF delivery | Reference architecture and component pages written | [docs/large-pdf-render](docs/large-pdf-render/docs/02-reference-architecture/index.md) |
-| 3 | Customer communication platform | In progress | [docs/customer-communication-platform](docs/customer-communication-platform) |
+| 3 | Customer communication platform | Reference architecture and component pages written | [docs/customer-communication-platform](docs/customer-communication-platform/docs/02-reference-architecture/index.md) |
 
 ---
 
@@ -30,7 +30,11 @@ Reference architectures and solution designs for three problems, published as a 
 
 ## 3. Customer communication platform
 
-Not written yet. Pages go in [`docs/customer-communication-platform/`](docs/customer-communication-platform). The site adds it to the sidebar as soon as that folder contains a Markdown page.
+**The problem.** Email, SMS, push and physical mail are separate stacks. Each has its own templates, its own copy of the customer's contact details, and its own status. A product system integrates once per channel, and a future-dated send is a different job from a message that must leave now.
+
+**The approach.** Producers call one Notification front door, over REST, with a tracking id. The accept writes the notification and an outbox row in one database transaction. Inside the front door, the outbox claims immediate rows with `SKIP LOCKED` and puts them on Kafka, and release does the same for rows whose send time has arrived. The notification core brain holds the dispatcher, recipient resolution and template resolution, and writes a channel outbox. Individual adapters for email, SMS, push and physical mail submit to a notification external channel provider and publish the result. The producer reads status from the tracking id.
+
+**What the documents cover:** an executive brief, the business use case, and a reference architecture. Under the architecture, one page each for the notification front door, the notification core brain, the notification channel adapters, the notification external channel providers, and the priority lane design. The front door holds ingestion, outbox and release. The core brain holds the notification core dispatcher, notification recipient resolution and notification template resolution.
 
 ---
 

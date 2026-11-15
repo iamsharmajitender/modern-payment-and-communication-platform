@@ -76,9 +76,3 @@ Each release stands on its own.
 | A badly built source PDF | The pipeline flags huge images and a missing outline so a publisher can fix the source |
 
 Waiting has a cost. Readers keep abandoning the document or calling for help. Delivery charges grow with every new reader. An unscanned upload remains a risk to the customer's device. Without versions, the organisation still cannot show what a customer was given.
-
-## Decision required
-
-1. Endorse one document platform for large PDFs in the desktop and mobile apps.
-2. Approve the first release, desktop reading and search, to proceed.
-3. Name an executive sponsor and the business owner for the success measures.

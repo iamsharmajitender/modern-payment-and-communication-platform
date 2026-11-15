@@ -32,7 +32,7 @@ A version becomes readable only after both the prefix and the rows exist.
 | `page_text` | One row per page, with the text and a full-text vector | Be updated after publish. A correction is a new version |
 | `reading_state` | One row per customer, document and version | Be required for the first page to paint |
 | Audit store | Append open, search and download. Export to the SIEM. Retention lock where the rule requires it | Be queried on the open path |
-| Search engine | Stay empty until PostgreSQL misses the target or search must cross documents | Replace `page_text` as the only copy. The table remains the source |
+| Search engine | Stay empty on day one. Explore OpenSearch if PostgreSQL full-text search cannot answer the query, or latency increases | Replace `page_text` as the only copy. The table remains the source |
 
 The core customer system, if there is one, remains the system of record for who the customer is. This platform stores the entitlement binding it was given, and it caches it. It does not become the identity system.
 

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer communication — business value</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f8fafc; }
+    svg { display: block; width: 1280px; height: 640px; }
+  </style>
+</head>
+<body>
+  <svg viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+    <title id="t">Customer communication business value map</title>
+    <desc id="d">Separate channel stacks, copied contacts and no single status lead to one notification front door, one notification core brain and one adapter per channel. Benefits are one integration, allowed channels, a tracking id and no lost or double send, measured by accept time, publish time, duplicates and status coverage. Value is released from real-time email and SMS, to scheduled sends and push, to physical mail and receipts.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+      </marker>
+    </defs>
+    <style>
+      .why { fill: #fff1f2; stroke: #fb7185; stroke-width: 1.3; }
+      .build { fill: #eff6ff; stroke: #3b82f6; stroke-width: 1.3; }
+      .get { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.3; }
+      .know { fill: #fffbeb; stroke: #d97706; stroke-width: 1.3; }
+      .h { font-family: 'Inter', system-ui, sans-serif; font-size: 16px; font-weight: 700; fill: #1e293b; text-anchor: middle; }
+      .item { font-family: 'Inter', system-ui, sans-serif; font-size: 14px; fill: #1e293b; }
+      .foot { font-family: 'Inter', system-ui, sans-serif; font-size: 14px; fill: #64748b; text-anchor: middle; }
+    </style>
+    <rect width="100%" height="100%" fill="#f8fafc"/>
+
+    <line x1="308" y1="300" x2="336" y2="300" stroke="#64748b" stroke-width="1.3" marker-end="url(#arrow)"/>
+    <line x1="624" y1="300" x2="652" y2="300" stroke="#64748b" stroke-width="1.3" marker-end="url(#arrow)"/>
+    <line x1="940" y1="300" x2="968" y2="300" stroke="#64748b" stroke-width="1.3" marker-end="url(#arrow)"/>
+
+    <rect x="24" y="48" width="284" height="500" rx="10" class="why"/>
+    <rect x="336" y="48" width="288" height="500" rx="10" class="build"/>
+    <rect x="652" y="48" width="288" height="500" rx="10" class="get"/>
+    <rect x="968" y="48" width="288" height="500" rx="10" class="know"/>
+
+    <text x="166" y="88" class="h">Why now</text>
+    <text x="480" y="88" class="h">What we build</text>
+    <text x="796" y="88" class="h">What we get</text>
+    <text x="1112" y="88" class="h">How we know</text>
+
+    <text x="48" y="140" class="item">A stack per channel</text>
+    <text x="48" y="180" class="item">Contact extracts copied</text>
+    <text x="48" y="220" class="item">No single status</text>
+    <text x="48" y="260" class="item">Future sends are special</text>
+    <text x="48" y="300" class="item">A crash loses or repeats</text>
+    <text x="48" y="340" class="item">A new channel means a</text>
+    <text x="48" y="364" class="item">new system</text>
+
+    <text x="360" y="140" class="item">One notification front door</text>
+    <text x="360" y="180" class="item">Ingestion, outbox, release</text>
+    <text x="360" y="220" class="item">One notification core brain</text>
+    <text x="360" y="260" class="item">Dispatcher, recipient and</text>
+    <text x="360" y="284" class="item">template resolution</text>
+    <text x="360" y="324" class="item">One adapter per channel</text>
+    <text x="360" y="364" class="item">External channel providers</text>
+
+    <text x="676" y="140" class="item">One integration</text>
+    <text x="676" y="180" class="item">One tracking id</text>
+    <text x="676" y="220" class="item">Send now or later</text>
+    <text x="676" y="260" class="item">Allowed channels only</text>
+    <text x="676" y="300" class="item">Accepted work is not lost</text>
+    <text x="676" y="340" class="item">A retry does not double-send</text>
+    <text x="676" y="380" class="item">A new channel is an adapter</text>
+
+    <text x="992" y="140" class="item">Accept under 300 ms</text>
+    <text x="992" y="180" class="item">On Kafka within 5 seconds</text>
+    <text x="992" y="220" class="item">Due send within 1 minute</text>
+    <text x="992" y="260" class="item">Duplicate submits at zero</text>
+    <text x="992" y="300" class="item">Every tracking id readable</text>
+    <text x="992" y="340" class="item">Ingest and status at 99.9%</text>
+
+    <text x="640" y="590" class="foot">Phases: real-time email and SMS, then scheduled sends and push, then physical mail and receipts.</text>
+  </svg>
+</body>
+</html>

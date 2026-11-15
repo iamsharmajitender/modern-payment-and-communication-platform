@@ -20,7 +20,7 @@ The design rests on the assumptions below. Confirm each one with the business an
 | # | Area | Assumption | If it does not hold |
 |---|------|------------|---------------------|
 | 1 | Content | The document is the same for every entitled customer. It is not personalised, so all customers share one cached copy at the edge | Personalised documents cannot share the cache. Each copy is produced per customer, which changes storage, cost and delivery |
-| 2 | Document size and count | A handful of large documents, each about 1,000 pages and up to roughly 200 MB | Many documents, or search across them, moves search from PostgreSQL to a search engine sooner and needs more pipeline capacity |
+| 2 | Document size and count | A handful of large documents, each about 1,000 pages and up to roughly 200 MB | Many documents, or search across them, can raise search latency. Explore OpenSearch then. It is not required on day one, and the pipeline needs more capacity |
 | 3 | Update frequency | New versions are published monthly or less often. Processing a version, including OCR, can take minutes before review | Frequent or urgent updates need a faster pipeline, for example OCR split across page ranges |
 | 4 | Reading pattern | A customer reads perhaps 20 to 50 pages per session, not the whole document | If most customers read the whole file, range requests save less and the optional offline copy becomes the main path |
 | 5 | Customer actions | Customers read, search, bookmark and download. They do not annotate, fill forms or sign | Annotation, forms or signing need a commercial viewer on every platform |
@@ -137,7 +137,7 @@ Object storage, PostgreSQL, an optional search engine, and the audit store. No s
 |-------|-------|
 | Object storage | Linearised PDF, chunks, thumbnails, manifest. One prefix per version. Private |
 | PostgreSQL | Document, version, page text, reading state |
-| Search index | Optional. Cross-document search when PostgreSQL no longer meets the target |
+| Search index | Empty on day one. Explore OpenSearch if PostgreSQL full-text search cannot answer the query, or latency increases |
 | Audit store | Append-only open, search and download events. Exported to the SIEM |
 
 ---
@@ -297,7 +297,7 @@ A failed audit export does not change the version. The consumer retries from the
 | Objects | S3-compatible store, versioned prefixes | The only copy of the PDF bytes |
 | Events | The log in [section 6](#6-topics) | Replay window. Not the system of record |
 | Audit archive | Object storage with a retention lock where required | Open, search and download events |
-| Search at scale | OpenSearch, or the cloud equivalent | Only when PostgreSQL misses the 500 ms target or search crosses documents |
+| Search at scale | OpenSearch, only if explored | Not deployed on day one. Explore it if PostgreSQL full-text search cannot answer the query, or search latency increases past the 500 ms target |
 
 The object store is the system of record for bytes. PostgreSQL is the system of record for which version is current, who approved it, and the page text. A manifest in the prefix describes the chunks and the outline so a client can navigate without opening the PDF. A published prefix is never rewritten. The [document data](./06-document-data.md) page has the keys and the tables.
 
@@ -358,6 +358,8 @@ A public request is inspected before it reaches `document-service`. The public e
 
 The WAF runs the OWASP core rule set, a limit on body size, a block on methods the API does not use, and a rate rule per token. It does not decide entitlement and it does not scan PDF bytes. An SFTP-style drop is not used. Administrators upload with pre-signed URLs to the quarantine bucket, which is not behind the public CDN cache.
 
+DDoS protection in the table above is the protection included with the CDN. CloudFront includes AWS Shield Standard, Azure includes infrastructure DDoS protection, and Google's edge includes always-on network DDoS protection. Those are part of the CDN. This design does not add AWS Shield Advanced, Azure DDoS Network Protection or Cloud Armor Enterprise. Those are paid subscriptions with a response team, for an edge that must stay up through a targeted attack. Here the public traffic is moderate cached reads, and the origin is private, so the CDN's included protection and the WAF cover the flood. A paid DDoS subscription would be a later decision if that threat changes.
+
 Per-customer watermarking, if required, is a viewer overlay. A file stamped per customer cannot be shared in the CDN cache and is generated only for an explicit download.
 
 ---
@@ -387,9 +389,9 @@ Each row is the chosen product. Earlier sections describe the control. They do n
 | Building block | Choice | Constraint |
 |----------------|--------|------------|
 | Container platform | Kubernetes | A conformant distribution, in the required region |
-| Workflow engine | Temporal | Self-hosted or Temporal Cloud. Heavy steps run as containers, because OCR of 1,000 pages can exceed a short function timeout |
+| Workflow engine | TBD | |
 | Object storage | An S3-compatible store | Private. One prefix per version |
-| Database and search | PostgreSQL full-text search | OpenSearch only when scale or cross-document search requires it |
+| Database and search | PostgreSQL full-text search | OpenSearch is not required on day one. Explore it if full-text search cannot answer the query, or latency increases |
 | Malware scanning | ClamAV, or a commercial engine behind `scan-worker` | The scanner can be replaced without rewriting the workflow |
 | PDF processing | Apache PDFBox, qpdf, PDFium | OCRmyPDF with Tesseract for the text layer. A commercial OCR engine only for pages Tesseract fails |
 | Identity | The enterprise identity provider, or Keycloak where the organisation has none | OIDC. The document services do not store passwords |
@@ -415,7 +417,7 @@ Managed equivalents for a team that does not want to operate the stack above. Th
 | Edge token check | CloudFront signed cookies (option A) | No native signed cookies at the edge. Use option B or C | Cloud CDN signed cookies (option A) |
 | Workflow engine | Temporal Cloud | Temporal Cloud | Temporal Cloud |
 | PostgreSQL | Amazon Aurora PostgreSQL or RDS | Azure Database for PostgreSQL | Cloud SQL or AlloyDB |
-| Search at scale | Amazon OpenSearch Service | Azure AI Search | Vertex AI Search, or Elastic Cloud |
+| Search, only if explored | Amazon OpenSearch Service | Azure AI Search | Vertex AI Search, or Elastic Cloud |
 | Malware scanning | GuardDuty Malware Protection for S3, behind `scan-worker` | Microsoft Defender for Storage | A commercial scanner or ClamAV |
 | OCR for hard pages | Amazon Textract, behind `ocr-worker` | Azure AI Document Intelligence | Document AI |
 | Identity | Amazon Cognito, or the enterprise provider | Microsoft Entra External ID | Identity Platform |
@@ -425,6 +427,10 @@ Managed equivalents for a team that does not want to operate the stack above. Th
 | Private origin | Origin Access Control | Private origin locked to Front Door | Signed requests from the load balancer |
 
 Azure Front Door does not validate signed cookies at the edge. Serving a cached private document on Azure uses the token-checking proxy on the [edge delivery](./03-edge-delivery.md#edge-token-validation) page. Confirm that option before choosing the CDN.
+
+OpenSearch is not required on day one. Search runs on PostgreSQL full-text search. If that search cannot answer the query, or latency increases past the 500 ms target, explore OpenSearch. Amazon OpenSearch Service is the AWS service for that exploration. Azure AI Search, or Vertex AI Search or Elastic Cloud, is the same step on the other clouds. Until then the search row is not deployed.
+
+There is no Shield Advanced row. DDoS protection is the protection included with the CDN, as described under [request protection](#request-protection).
 
 Use the managed service through its open interface: the S3 API, the PostgreSQL wire protocol and OpenTelemetry. A cloud workflow engine such as Step Functions, Durable Functions or Google Workflows is a different programming model from Temporal, so it is a separate decision and not a drop-in mapping. A short function timeout is the wrong place for a 1,000-page OCR. The worker is still a container.
 
@@ -438,7 +444,7 @@ Use the managed service through its open interface: the S3 API, the PostgreSQL w
 | 2 | Signed cookies at the edge, refreshed while the viewer is open | A signed URL per request | A long reading session outlives a URL. PDF.js cannot swap the URL mid-document, so later pages fail |
 | 3 | Server-side search | Search inside the viewer | Viewer search reads every page and downloads the document |
 | 4 | Native mobile rendering on page chunks | A full download, a WebView, or a commercial SDK as the default | The phone stays within memory, the viewer feels native, and there is no licence cost. A commercial SDK is only for annotations, forms or signing |
-| 5 | PostgreSQL full-text search first | A search cluster from day one | One database to run, with a clear point at which to move |
+| 5 | PostgreSQL full-text search on day one | A search cluster from day one | One database to run. Explore OpenSearch only if full-text search cannot answer the query, or latency increases |
 | 6 | Portable building blocks, with a cloud mapping | An AWS-only stack as the architecture | The same services run on any cloud. The one cloud-specific concern, edge token validation, is isolated on the edge page |
 | 7 | Linearise as the last rewrite | Linearise earlier in the pipeline | OCR, sanitising and image optimisation rewrite the file and undo linearisation |
 | 8 | Scan in quarantine before any parser runs | Validate and parse, then scan | PDF parsers are a common place for a malicious file to land |

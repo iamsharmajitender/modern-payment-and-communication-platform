@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer communication — priority lanes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f8fafc; }
+    svg { display: block; width: 1440px; height: 700px; }
+  </style>
+</head>
+<body>
+  <svg viewBox="0 0 1440 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+    <title id="t">Priority lanes, high and bulk</title>
+    <desc id="d">Two swimlanes. High carries OTP, fraud, card block, auth and alerts. Bulk carries marketing and the daytime backlog. Each lane has its own ingestion share, outbox claim, Kafka topic, dispatcher consumer, adapters and provider rate. The lanes do not merge.</desc>
+    <defs>
+      <marker id="high" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#e11d48"/>
+      </marker>
+      <marker id="bulk" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#2563eb"/>
+      </marker>
+    </defs>
+    <style>
+      .paper { fill: #f8fafc; }
+      .highband { fill: #fff1f2; stroke: #fda4af; stroke-width: 1.2; }
+      .bulkband { fill: #dbeafe; stroke: #60a5fa; stroke-width: 1.2; }
+      .api { fill: #ffffff; stroke: #16a34a; stroke-width: 1.4; }
+      .kafka { fill: #ffffff; stroke: #7c3aed; stroke-width: 1.4; }
+      .orch { fill: #ffffff; stroke: #db2777; stroke-width: 1.4; }
+      .ch { fill: #ffffff; stroke: #ea580c; stroke-width: 1.4; }
+      .ext { fill: #ffffff; stroke: #6d28d9; stroke-width: 1.4; }
+      .h { font-family: 'Inter', system-ui, sans-serif; font-size: 13px; font-weight: 600; fill: #64748b; text-anchor: middle; }
+      .lane { font-family: 'Inter', system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #1e293b; }
+      .lanesub { font-family: 'Inter', system-ui, sans-serif; font-size: 11px; fill: #64748b; }
+      .name { font-family: 'Inter', system-ui, sans-serif; font-size: 14px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .sub { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; fill: #64748b; text-anchor: middle; }
+      .foot { font-family: 'Inter', system-ui, sans-serif; font-size: 13px; fill: #64748b; text-anchor: middle; }
+    </style>
+    <rect width="100%" height="100%" class="paper"/>
+
+    <text x="270" y="36" class="h">Ingestion</text>
+    <text x="470" y="36" class="h">Outbox and release</text>
+    <text x="670" y="36" class="h">Kafka</text>
+    <text x="870" y="36" class="h">Dispatcher</text>
+    <text x="1070" y="36" class="h">Adapters</text>
+    <text x="1270" y="36" class="h">Provider</text>
+
+    <rect x="24" y="56" width="1392" height="280" rx="12" class="highband"/>
+    <rect x="24" y="352" width="1392" height="280" rx="12" class="bulkband"/>
+
+    <text x="44" y="188" class="lane">High</text>
+    <text x="44" y="208" class="lanesub">OTP, fraud,</text>
+    <text x="44" y="224" class="lanesub">card block,</text>
+    <text x="44" y="240" class="lanesub">auth, alerts</text>
+
+    <text x="44" y="484" class="lane">Bulk</text>
+    <text x="44" y="504" class="lanesub">Marketing</text>
+    <text x="44" y="520" class="lanesub">and the</text>
+    <text x="44" y="536" class="lanesub">backlog</text>
+
+    <!-- high row -->
+    <rect x="180" y="146" width="180" height="100" rx="8" class="api"/>
+    <text x="270" y="186" class="name">Ingestion</text>
+    <text x="270" y="208" class="sub">Stores lane = high</text>
+
+    <rect x="380" y="146" width="180" height="100" rx="8" class="api"/>
+    <text x="470" y="186" class="name">Own claim</text>
+    <text x="470" y="208" class="sub">SKIP LOCKED, high only</text>
+
+    <rect x="580" y="146" width="180" height="100" rx="8" class="kafka"/>
+    <text x="670" y="186" class="name">ready.high</text>
+    <text x="670" y="208" class="sub">Partition by id</text>
+
+    <rect x="780" y="146" width="180" height="100" rx="8" class="orch"/>
+    <text x="870" y="186" class="name">High consumer</text>
+    <text x="870" y="208" class="sub">Own threads</text>
+
+    <rect x="980" y="136" width="180" height="120" rx="8" class="ch"/>
+    <text x="1070" y="172" class="name">Adapters</text>
+    <text x="1070" y="194" class="sub">SMS, push: own deploy</text>
+    <text x="1070" y="214" class="sub">Email, mail: high first</text>
+
+    <rect x="1180" y="146" width="180" height="100" rx="8" class="ext"/>
+    <text x="1270" y="186" class="name">Reserved rate</text>
+    <text x="1270" y="208" class="sub">Own sender or sub-account</text>
+
+    <line x1="360" y1="196" x2="380" y2="196" stroke="#e11d48" stroke-width="1.5" marker-end="url(#high)"/>
+    <line x1="560" y1="196" x2="580" y2="196" stroke="#e11d48" stroke-width="1.5" marker-end="url(#high)"/>
+    <line x1="760" y1="196" x2="780" y2="196" stroke="#e11d48" stroke-width="1.5" marker-end="url(#high)"/>
+    <line x1="960" y1="196" x2="980" y2="196" stroke="#e11d48" stroke-width="1.5" marker-end="url(#high)"/>
+    <line x1="1160" y1="196" x2="1180" y2="196" stroke="#e11d48" stroke-width="1.5" marker-end="url(#high)"/>
+
+    <!-- bulk row -->
+    <rect x="180" y="442" width="180" height="100" rx="8" class="api"/>
+    <text x="270" y="482" class="name">Ingestion</text>
+    <text x="270" y="504" class="sub">Rate-limited, lane = bulk</text>
+
+    <rect x="380" y="442" width="180" height="100" rx="8" class="api"/>
+    <text x="470" y="482" class="name">Own claim</text>
+    <text x="470" y="504" class="sub">SKIP LOCKED, capped</text>
+
+    <rect x="580" y="442" width="180" height="100" rx="8" class="kafka"/>
+    <text x="670" y="482" class="name">ready.bulk</text>
+    <text x="670" y="504" class="sub">Partition by id</text>
+
+    <rect x="780" y="442" width="180" height="100" rx="8" class="orch"/>
+    <text x="870" y="482" class="name">Bulk consumer</text>
+    <text x="870" y="504" class="sub">Capped threads</text>
+
+    <rect x="980" y="432" width="180" height="120" rx="8" class="ch"/>
+    <text x="1070" y="468" class="name">Adapters</text>
+    <text x="1070" y="490" class="sub">SMS, push: own deploy</text>
+    <text x="1070" y="510" class="sub">Email, mail: after high</text>
+
+    <rect x="1180" y="442" width="180" height="100" rx="8" class="ext"/>
+    <text x="1270" y="482" class="name">Remaining rate</text>
+    <text x="1270" y="504" class="sub">Own sender or sub-account</text>
+
+    <line x1="360" y1="492" x2="380" y2="492" stroke="#2563eb" stroke-width="1.5" marker-end="url(#bulk)"/>
+    <line x1="560" y1="492" x2="580" y2="492" stroke="#2563eb" stroke-width="1.5" marker-end="url(#bulk)"/>
+    <line x1="760" y1="492" x2="780" y2="492" stroke="#2563eb" stroke-width="1.5" marker-end="url(#bulk)"/>
+    <line x1="960" y1="492" x2="980" y2="492" stroke="#2563eb" stroke-width="1.5" marker-end="url(#bulk)"/>
+    <line x1="1160" y1="492" x2="1180" y2="492" stroke="#2563eb" stroke-width="1.5" marker-end="url(#bulk)"/>
+
+    <text x="720" y="668" class="foot">The rows do not share a queue. Results return on notification.result.high and notification.result.bulk.</text>
+  </svg>
+</body>
+</html>
