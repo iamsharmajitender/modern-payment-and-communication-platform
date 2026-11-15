@@ -50,10 +50,10 @@ A lane only works if it survives to the provider. If the two streams share a que
 | Outbox and release | Own claim, own publisher, `notification.ready.high` | Own claim, capped, `notification.ready.bulk` |
 | Notification core dispatcher | Own consumer. Always running. Own concurrency limit on recipient resolution and template resolution | Own consumer. Capped. Does not borrow the high consumer's threads |
 | SMS and push adapters | Own deployment and consumer group | Own deployment and consumer group. Bulk cannot use the high pods' threads or CPU |
-| Email and physical-mail adapters | Same deployment as bulk for that channel | That deployment drains high before it takes bulk |
+| Email adapter | Same deployment as bulk for that channel | That deployment drains high before it takes bulk |
 | Notification external channel provider | Reserved rate, or its own sender id or sub-account | The remaining rate, or its own sender id or sub-account |
 
-Email and physical mail can share a deployment only because that process drains high before bulk. SMS and push do not share a deployment. The provider split is required for every channel, including email. A high email submitted through the bulk sender's rate limit waits at the provider.
+Email can share a deployment with its bulk traffic only because that process drains high before bulk. SMS and push do not share a deployment. The provider split is required for every channel, including email. A high email submitted through the bulk sender's rate limit waits at the provider.
 
 Example quota, to be set with the provider contract: 200 messages a second reserved for high, 50 a second for bulk. Separate sender ids or sub-accounts are the alternative when the provider will not share one account fairly.
 
@@ -69,5 +69,5 @@ Lanes change who goes first. They do not add capacity. The provider quota is the
 2. Ingestion stores `lane` from `classification`.
 3. Outbox and release publish to the lane topic.
 4. The notification core dispatcher consumes and publishes per lane.
-5. Adapters: separate SMS and push deployments, and email and physical mail draining high first.
+5. Adapters: separate SMS and push deployments, and email draining high first.
 6. Observability: outbox age, consumer lag, and provider rate, each per lane. A high outbox older than its target is the alert. Bulk lag is not that alert.

@@ -28,7 +28,7 @@ A scheduled event (step 4a) uses steps 5 onward unchanged. If recipient resoluti
 |------|-------------|-------------|
 | Notification core dispatcher | Create one dispatch row per notification id, write the channel outbox, publish, and apply results | Render in the producer, trust an address on the request, or call a provider |
 | Notification recipient resolution | Return allowed contacts, and the channels it refused, with a reason | Accept a notification, store a template, or call a provider |
-| Notification template resolution | Return the rendered subject and body, or a print document, plus the template version | Choose the recipient, or send the message |
+| Notification template resolution | Return the rendered subject and body, plus the template version | Choose the recipient, or send the message |
 | Channel outbox | One row per channel, claimed with `SKIP LOCKED` | Publish to Kafka inside the same transaction as the row, without an outbox |
 | Failure | Retry resolution. After the retry budget, mark the notification failed and call the front door | Leave the producer on `RECEIVED` after a permanent failure |
 
@@ -42,15 +42,15 @@ The dispatcher is the only part of the core brain that reads Kafka and the only 
 
 Request: `customerId`, requested `channels`.
 
-Response: a list of `{channel, destination}` for addresses that may be used, and a list of `{channel, reason}` for channels that were refused (`suppressed`, `missing`, `not-requested`). The destination is an email address, a phone number, a device token or a postal address. It is not returned to the producer. It travels only as far as the notification channel adapter.
+Response: a list of `{channel, destination}` for addresses that may be used, and a list of `{channel, reason}` for channels that were refused (`suppressed`, `missing`, `not-requested`). The destination is an email address, a phone number or a device token. It is not returned to the producer. It travels only as far as the notification channel adapter.
 
-Recipient resolution is the customer master for contact. This platform does not keep a second copy to send from. A stale extract in a producer is not an input. The request's `customerId` is. It owns addresses, device tokens, postal address, preferences and suppression.
+Recipient resolution is the customer master for contact. This platform does not keep a second copy to send from. A stale extract in a producer is not an input. The request's `customerId` is. It owns addresses, device tokens, preferences and suppression.
 
 ## Notification template resolution
 
 Request: `templateId`, `channel`, `locale`, `data`.
 
-Response: `templateVersion`, and the channel payload. Email has a subject and a body. SMS and push have a body. Physical mail has a document reference the print adapter can pass to the provider. The part refuses an unknown template or a channel the template does not support. It does not interpolate from an unapproved template id.
+Response: `templateVersion`, and the channel payload. Email has a subject and a body. SMS and push have a body. The part refuses an unknown template or a channel the template does not support. It does not interpolate from an unapproved template id.
 
 `data` is the producer's values. The template defines which values are required. A missing required value is a failed render, not a blank message. Templates are approved before a producer can name them. The version on the response is what the dispatcher stores, so a later edit does not rewrite history.
 

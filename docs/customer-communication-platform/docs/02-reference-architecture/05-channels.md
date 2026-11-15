@@ -4,7 +4,7 @@ sidebar_label: Notification channel adapters
 
 # Notification channel adapters
 
-Notification channel adapters are individual adapters, one per channel: an email adapter, an SMS adapter, a push adapter and a physical-mail adapter. Each consumes its own messages, submits to a [notification external channel provider](./06-external-channel-providers.md), and publishes the result. Adding a channel adds an adapter. It does not add a path through the notification core brain.
+Notification channel adapters are individual adapters, one per channel: an email adapter, an SMS adapter and a push adapter. Each consumes its own messages, submits to a [notification external channel provider](./06-external-channel-providers.md), and publishes the result. Adding a channel adds an adapter. It does not add a path through the notification core brain.
 
 Back to the [reference architecture](./index.md).
 
@@ -29,10 +29,6 @@ Submits the rendered body to the SMS provider. A result of `SENT` means the prov
 
 Submits the rendered body to the push provider, for the device token. A result of `SENT` means the provider accepted the message. A rejected token is a `FAILED` result. It is not dropped.
 
-## Physical mail adapter
-
-Submits the document reference and the postal address to the print provider. A result of `SENT` means the provider accepted the job. There may be no later delivery receipt. Acceptance is not proof the customer received the letter.
-
 Each adapter scales on the lag of its own consumer group. An email incident does not stop the SMS adapter. Provider credentials are per adapter and come from the secrets manager.
 
 ## Result
@@ -41,7 +37,7 @@ Each adapter scales on the lag of its own consumer group. An email incident does
 |-------|---------|
 | `notificationId` | The notification |
 | `channelMessageId` | The idempotency key |
-| `channel` | `email`, `sms`, `push` or `physical` |
+| `channel` | `email`, `sms` or `push` |
 | `status` | `SENT` or `FAILED` |
 | `providerReference` | The provider's id, when it returned one |
 | `error` | Present when `FAILED` |

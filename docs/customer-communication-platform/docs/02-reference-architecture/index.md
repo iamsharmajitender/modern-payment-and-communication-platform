@@ -7,7 +7,7 @@ slug: /customer-communication-platform/docs/reference-architecture
 
 **Scope:** The services that accept a notification, carry it through an outbox onto Kafka, resolve the recipient, render the template, and submit it to a channel provider. The design is **cloud agnostic**. [Section 10](#10-cloud-mapping) maps the stateful building blocks to AWS, Azure and Google Cloud.
 
-**Context:** Product systems notify a customer by email, SMS, push or physical mail, immediately or at a future time. The [executive brief](../00-exec-brief.md) is the short version, and the benefits are in the [business use case](../01-business-use-case.md). How to design each part is on the [notification front door](./01-notification-api.md), the [notification core brain](./03-orchestrator.md), [notification channel adapters](./05-channels.md), [notification external channel providers](./06-external-channel-providers.md) and the [priority lane design](./priority-lane-design.md).
+**Context:** Product systems notify a customer by email, SMS or push, immediately or at a future time. The [executive brief](../00-exec-brief.md) is the short version, and the benefits are in the [business use case](../01-business-use-case.md). How to design each part is on the [notification front door](./01-notification-api.md), the [notification core brain](./03-orchestrator.md), [notification channel adapters](./05-channels.md), [notification external channel providers](./06-external-channel-providers.md) and the [priority lane design](./priority-lane-design.md).
 
 **Design rule:** The Notification front door is the only writer of the producer-facing notification. The notification core brain is the only service that resolves a recipient and renders a template. A notification channel adapter submits to a provider and does not choose the address or the content.
 
@@ -86,11 +86,11 @@ The design rests on the assumptions below. Confirm each one with the business an
 | 2 | One intent | A request is one customer, one template, an optional channel list, an optional send time, and a tracking id | A batch file of many customers is a producer-side loop of this request, or a later bulk ingest |
 | 3 | Customer master | Notification recipient resolution, inside the notification core brain, owns addresses, device tokens, preferences and suppression. The front door does not keep a copy | Without that part, the dispatcher has nowhere safe to resolve a recipient, and that part is built first |
 | 4 | Templates | Producers send a template id and data. Notification template resolution, inside the core brain, renders the channel content, including the version that was sent | A producer that must send a finished body skips template resolution. That path is an exception with its own audit |
-| 5 | Providers | Email, SMS and push go through a notification external channel provider. Physical mail goes through a print provider. Providers are replaceable behind the adapter | Building a send capability in-house replaces the provider call. The adapter boundary stays |
+| 5 | Providers | Email, SMS and push go through a notification external channel provider. Providers are replaceable behind the adapter | Building a send capability in-house replaces the provider call. The adapter boundary stays |
 | 6 | Scheduled sends | A future send time is stored on the notification and published by release, inside the front door, when it falls due. The notification core brain does not have a second pipeline | A send window that depends on a business calendar lives in release's due query, not in each producer |
 | 7 | Volumes | Peak volume is not yet sized. The front door, the core brain and each adapter scale horizontally. Kafka partitions hold the topics | A much higher peak needs more partitions and a load test before that producer is onboarded |
 | 8 | Hosting | The platform runs Kubernetes, PostgreSQL and Kafka in the required region, or the managed services in [section 10](#10-cloud-mapping) | A different runtime still has to offer a transactional database with `SKIP LOCKED` and a log the consumers can replay |
-| 9 | Delivery meaning | Sent means the provider accepted the message. A later receipt can move it to delivered or failed. Physical mail stops at accepted unless the print provider returns a receipt | A producer that needs proof of opening needs a provider that supplies that event. The result topic can carry it |
+| 9 | Delivery meaning | Sent means the provider accepted the message. A later receipt can move it to delivered or failed | A producer that needs proof of opening needs a provider that supplies that event. The result topic can carry it |
 
 ---
 
@@ -118,7 +118,7 @@ The parts that carry a notification match the flow above. Ingestion, outbox and 
 | 3 | Front door database | Source of truth for the producer-facing notification and the ingest outbox |
 | 4 | Kafka | Event backbone. Carries ready, channel and result records |
 | 5 | Notification core brain | Three parts. The notification core dispatcher consumes ready events, writes channel rows and applies results. Notification recipient resolution returns the addresses the customer can be reached on. Notification template resolution renders approved content for one channel |
-| 6 | Notification channel adapters | One adapter each for email, SMS, push and physical mail |
+| 6 | Notification channel adapters | One adapter each for email, SMS and push |
 | 7 | Notification external channel providers | Accept the message and deliver it to the customer |
 
 What each part must refuse, and the fields on each call, are on the design pages.
@@ -271,7 +271,7 @@ Each row is the chosen product for that job.
 | Producer ingress | REST | Returns `202` and the tracking id once the outbox row is committed |
 | Recipient resolution | Inside the notification core brain | Addresses, preferences and suppression. Called only by the dispatcher |
 | Template resolution | Inside the notification core brain | Versioned renders. Called only by the dispatcher |
-| Channel providers | The contracted email, SMS, push and print providers | Behind the adapter. Replaceable |
+| Channel providers | The contracted email, SMS and push providers | Behind the adapter. Replaceable |
 | Secrets | The enterprise secrets manager | Provider credentials and API client secrets |
 | Observability | OpenTelemetry | One trace per tracking id |
 

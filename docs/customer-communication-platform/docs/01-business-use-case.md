@@ -4,7 +4,7 @@ sidebar_label: Business use case
 
 # Customer Communication Platform — Business Use Case
 
-**In one line:** One platform that lets every product system notify a customer on email, SMS, push or physical mail, now or at a future time, with one tracking id from accept to the provider result.
+**In one line:** One platform that lets every product system notify a customer on email, SMS or push, now or at a future time, with one tracking id from accept to the provider result.
 
 **Context:** Product systems already send customer messages, including the [payments platform](../../modern-payment-platform/docs/00-exec-brief.md). Each channel has grown its own templates, contact extract and status. This platform replaces those stacks with one notification front door, one notification core brain and one adapter per channel.
 
@@ -12,11 +12,11 @@ sidebar_label: Business use case
 
 ## 1. How notification works today
 
-Email, SMS and physical mail are separate systems. A producer that needs more than one channel integrates more than once, stores more than one status, and cannot treat a future-dated letter the same way it treats an immediate SMS.
+Email, SMS and push are separate systems. A producer that needs more than one channel integrates more than once, stores more than one status, and cannot treat a future-dated notice the same way it treats an immediate SMS.
 
-![Three separate notification stacks. Email, SMS and physical mail each keep their own templates, contact details and status. A producer integrates with every stack.](../diagrams/exec-problem.png)
+![Three separate notification stacks. Email, SMS and push each keep their own templates, contact details and status. A producer integrates with every stack.](../diagrams/exec-problem.png)
 
-Push, where it exists, is a fourth stack. Preferences and suppression are copied, so a customer who opts out of SMS can still be texted by a system that has an old extract.
+Preferences and suppression are copied, so a customer who opts out of SMS can still be texted by a system that has an old extract.
 
 ---
 
@@ -24,11 +24,11 @@ Push, where it exists, is a fourth stack. Preferences and suppression are copied
 
 | Driver | What is happening | What it means |
 |--------|-------------------|---------------|
-| **Every product sends messages** | Payments, servicing, onboarding and statements each notify the customer | Each new product repeats the same email, SMS and letter build |
+| **Every product sends messages** | Payments, servicing, onboarding and statements each notify the customer | Each new product repeats the same email, SMS and push build |
 | **Customers expect one conversation** | The same event often needs an email and a message on the phone | Two stacks means two templates, two failures and two statuses |
 | **Preferences have to be honoured** | A suppressed channel, or a stale address, is a complaint and a compliance issue | Contact choice has to be resolved at send time, not copied into each producer |
 | **Sends must be provable** | Operations and audit ask whether a required notice left, and when | A tracking id has to survive from the producer's call to the provider result |
-| **Scheduled notices are normal** | Statements, reminders and letters leave on a date, not at the moment of the request | A future send has to be durable. A polling job in each producer is not |
+| **Scheduled notices are normal** | Statements and reminders leave on a date, not at the moment of the request | A future send has to be durable. A polling job in each producer is not |
 
 ---
 
@@ -41,7 +41,7 @@ Producers call one Notification front door. The platform commits the intent, pub
 - **Notification front door.** REST in. Status by tracking id. The notification and its outbox row commit together.
 - **Outbox and release, inside the front door.** Immediate rows are published as they are committed. Due rows are published when their send time arrives. Both land on the same Kafka topic.
 - **Notification core brain.** Three parts. The notification core dispatcher writes one channel message per channel. Notification recipient resolution returns the address. Notification template resolution renders the content.
-- **Notification channel adapters.** An individual adapter for email, SMS, push and physical mail submits to a notification external channel provider and publishes the result.
+- **Notification channel adapters.** An individual adapter for email, SMS and push submits to a notification external channel provider and publishes the result.
 
 The notification external channel providers are bought. The front door, the core brain, the adapters and the status model are built.
 
@@ -64,9 +64,9 @@ The notification external channel providers are bought. The front door, the core
 | # | Use case | Channels | Outcome |
 |---|----------|----------|---------|
 | 1 | **Tell the customer now**, such as a payment or a one-time code | Email, SMS, push | The message leaves as soon as the provider accepts it |
-| 2 | **Send on a date**, such as a statement or a reminder | Email, physical mail | The intent is stored when the producer calls, and leaves when it is due |
+| 2 | **Send on a date**, such as a statement or a reminder | Email, SMS | The intent is stored when the producer calls, and leaves when it is due |
 | 3 | **Reach the customer on the allowed channel** | Whichever notification recipient resolution returns | A suppressed or missing address is not guessed |
-| 4 | **One event, more than one channel** | Email and SMS, or email and a letter | One tracking id, one status, one result per channel |
+| 4 | **One event, more than one channel** | Email and SMS, or email and push | One tracking id, one status, one result per channel |
 | 5 | **Answer "what happened to this notice?"** | Any | Status is readable from the tracking id for the life of the record |
 | 6 | **Add a channel or a provider** | Push, or a replacement email provider | A new adapter behind the same notification core brain. Producers do not change |
 
@@ -107,7 +107,7 @@ Illustrative targets, to be confirmed with the business.
 
 ## 8. Cost of not acting
 
-- Every new product builds email, SMS and letters again.
+- Every new product builds email, SMS and push again.
 - Opt-outs live in extracts, so they are late or missing.
 - Operations cannot answer, from one record, whether a required notice was sent.
 - A failure between "we decided to send" and "the provider accepted" loses the message or sends it twice.
@@ -121,7 +121,7 @@ Illustrative targets, to be confirmed with the business.
 |-------|----------------|----------------|
 | **1. Real-time email and SMS** | Ingestion, status, outbox, notification core brain, email and SMS adapters | One integration for the two channels most producers need, with a tracking id |
 | **2. Scheduled sends and push** | Release, future send time, push adapter | Notices that must leave on a date, and messages on the phone, on the same path |
-| **3. Physical mail and receipts** | Physical-mail adapter, provider delivery receipts | Letters without a separate stack, and a status that can move from sent to delivered or failed |
+| **3. Provider receipts** | Provider delivery receipts | A status that can move from sent to delivered or failed |
 
 ---
 
@@ -133,7 +133,6 @@ Illustrative targets, to be confirmed with the business.
 | Recipient resolution is slow or wrong | The dispatcher does not send without an address it returned. A timeout retries, then fails the notification |
 | Two publishers claim the same row | The claim is `SKIP LOCKED` in one database statement. The row moves to claimed before the Kafka publish |
 | A provider retry looks like a new send | The adapter sends the provider its own idempotency key, the channel message id |
-| Physical mail cannot be recalled after handoff | Status for that channel stops at accepted by the print provider, unless the provider returns a later receipt |
 | A producer retries the ingest after a timeout | The same tracking id returns the original notification and does not write a second outbox row |
 
 ---

@@ -4,7 +4,7 @@ sidebar_label: Notification external channel providers
 
 # Notification external channel providers
 
-Notification external channel providers are the bought services that accept a message and deliver it: email, SMS, push and print. A [notification channel adapter](./05-channels.md) is the only caller. The provider does not see the producer, the notification front door, or the notification core brain.
+Notification external channel providers are the bought services that accept a message and deliver it: email, SMS and push. A [notification channel adapter](./05-channels.md) is the only caller. The provider does not see the producer, the notification front door, or the notification core brain.
 
 Back to the [reference architecture](./index.md).
 
@@ -15,7 +15,6 @@ Back to the [reference architecture](./index.md).
 | Email | A rendered subject and body, to one address | The provider accepted the message for delivery | A later bounce can return `FAILED` |
 | SMS | A rendered body, to one phone number | The provider accepted the message | A later delivery report can update the result |
 | Push | A rendered body, to one device token | The provider accepted the message | A token rejection is a `FAILED` result |
-| Print | A document reference and a postal address | The provider accepted the print job | There may be no later receipt. Status then stops at accepted |
 
 The adapter sends the channel message id as the idempotency key. A repeated submit with the same key is the same send. The provider's own reference, when it returns one, is stored on the result. It is not a second tracking id for the producer.
 
